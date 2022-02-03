@@ -21,6 +21,7 @@ async function signInUser(emailParam: string, passwordParam: string) {
   localStorage.setItem(StorageItems.token, content.token);
   localStorage.setItem(StorageItems.refreshToken, content.refreshToken);
   localStorage.setItem(StorageItems.id, content.userId);
+  // console.log(content.token);
   return content;
 }
 

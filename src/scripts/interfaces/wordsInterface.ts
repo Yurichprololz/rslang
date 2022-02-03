@@ -32,4 +32,58 @@ interface IWords {
   textExampleTranslate: string
 }
 
-export { Words, IWords };
+enum WordOptional{
+  difficulty = 'difficulty',
+  optional = 'optional',
+  learned = 'learned',
+  failure = 'failure',
+  success = 'success',
+}
+interface IWordOptional {
+  learned: boolean,
+  failure: number,
+  success: number,
+}
+interface IUserWordsObj {
+  difficulty: string,
+  optional?: IWordOptional,
+}
+
+interface IUserWords {
+  userId: string,
+  wordId: string,
+  word: IUserWordsObj
+}
+
+enum ForAggrObj {
+  group = 'group',
+  page = 'page',
+  wordsPerPage = 'wordsPerPage',
+  filter = 'filter',
+  difficulty = 'userWord.difficulty',
+  and = '$and',
+  or = '$or',
+}
+
+interface FilterObj {
+  'userWord.difficulty'?: string,
+  '$and' ?: {}[],
+  '$or' ?: {}[],
+}
+interface IAggrObj {
+  group?: number,
+  page?: number,
+  wordsPerPage?: number,
+  filter?: FilterObj,
+}
+
+interface AggregRes {
+  paginatedResults: IWords[],
+  totalCount: {
+    'count': number
+  }[],
+}
+
+export {
+  Words, IWords, IUserWords, WordOptional, IUserWordsObj, IAggrObj, ForAggrObj, AggregRes,
+};
