@@ -1,21 +1,23 @@
 @use "sass:color";
 
-.card {
-  h3{
-    font-size: 6rem;
-  }
-  @each $colorName, $color in $colorArr{
-    .colored-#{$colorName}{
-      background: $color;
-
-      transition: all .3s ease-in-out;
+.dictionary{
+  .card {
+    h3{
+      font-size: 6rem;
     }
-    .colored-#{$colorName}:hover{
-      background: color.change(black, $lightness: 85%);
-      color: $color;
-    } 
-  }
-  &:active{
-    transform: scale(95%);
+    @each $colorName, $color in $colorArr{
+      .colored-#{$colorName}{
+        background: $color;
+
+        transition: all .3s ease-in-out;
+      }
+      .colored-#{$colorName}:hover{
+        background: color.change(black, $lightness: 85%);
+        color: $color;
+      } 
+    }
+    &:active{
+      transform: scale(95%);
+    }
   }
 }
