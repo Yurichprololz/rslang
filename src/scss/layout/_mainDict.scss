@@ -21,3 +21,11 @@
     }
   }
 }
+
+.wordlist{
+  @each $colorName, $color in $colorArrBg{
+    &.colored-#{$colorName}{
+      background: $color;
+    }
+  }
+}

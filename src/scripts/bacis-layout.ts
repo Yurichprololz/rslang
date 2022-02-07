@@ -1,4 +1,6 @@
 import { createElement } from './utils';
+import headerButtonsHandler from './parts/home/headerButtonsHandler';
+import {LocalStorageItem, StorageKeys } from './classes/lsNavigation';
 
 function createHeader():HTMLElement {
   const header = createElement('header', 'header p-3 bg-dark text-white') as HTMLElement;
@@ -9,10 +11,10 @@ function createHeader():HTMLElement {
               <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
             </a>
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
-              <li><a href="#" class="nav-link px-2 text-white">Электронный учебник</a></li>
+              <li><a href="#" class="nav-link px-2 text-secondary" id="home">Home</a></li>
+              <li><a href="#" class="nav-link px-2 text-white" id="dictionary">Электронный учебник</a></li>
               <li><a href="#" class="nav-link px-2 text-white">Аудиовызов</a></li>
-              <li><a href="#" class="nav-link px-2 text-white">Спринт</a></li>
+              <li><a href="#" class="nav-link px-2 text-white" id="sprint">Спринт</a></li>
               <li><a href="#" class="nav-link px-2 text-white">Статистика</a></li>
             </ul>
             <div class="text-end">
@@ -22,6 +24,7 @@ function createHeader():HTMLElement {
           </div>
         </div>
   `;
+  headerButtonsHandler(header);
   return header;
 }
 
@@ -79,6 +82,7 @@ function renderBasicLayout():void {
   document.body.append(header);
   document.body.append(main);
   document.body.append(footer);
+  new LocalStorageItem().startStorage();
 }
 
 export default renderBasicLayout;
