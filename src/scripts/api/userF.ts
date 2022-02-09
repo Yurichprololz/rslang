@@ -4,7 +4,7 @@ import {
 } from '../interfaces/usersInterface';
 import { General, SubGeneral } from '../interfaces/generalEnum';
 
-async function signInUser(emailParam: string, passwordParam: string) {
+async function signInUser(emailParam: string, passwordParam: string):Promise<number | IAuth> {
   const objBody:IUserObjBody = {
     email: emailParam,
     password: passwordParam,
@@ -17,15 +17,19 @@ async function signInUser(emailParam: string, passwordParam: string) {
     },
     body: JSON.stringify(objBody),
   });
-  const content: IAuth = await rawResponse.json();
-  localStorage.setItem(StorageItems.token, content.token);
-  localStorage.setItem(StorageItems.refreshToken, content.refreshToken);
-  localStorage.setItem(StorageItems.id, content.userId);
-  // console.log(content.token);
-  return content;
+  if (rawResponse.ok) {
+    const content: IAuth = await rawResponse.json();
+    localStorage.setItem(StorageItems.token, content.token);
+    localStorage.setItem(StorageItems.refreshToken, content.refreshToken);
+    localStorage.setItem(StorageItems.id, content.userId);
+    localStorage.setItem(StorageItems.name, `${content.name}`);
+    return content;
+  }
+  return rawResponse.status;
 }
 
-async function createUser(emailParam: string, passwordParam: string, nameParam:string) {
+async function createUser(emailParam: string, passwordParam: string, nameParam:string)
+  :Promise<number | IUserObjBody> {
   const objBody:IUserObjBody = {
     email: emailParam,
     password: passwordParam,
@@ -39,9 +43,12 @@ async function createUser(emailParam: string, passwordParam: string, nameParam:s
     },
     body: JSON.stringify(objBody),
   });
-  const content: IUserObjBody = await rawResponse.json();
-  signInUser(emailParam, passwordParam);
-  return content;
+  if (rawResponse.ok) {
+    const content: IUserObjBody = await rawResponse.json();
+    await signInUser(emailParam, passwordParam);
+    return content;
+  }
+  return rawResponse.status;
 }
 
 async function getUser() {
