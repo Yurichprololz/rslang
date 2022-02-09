@@ -3,7 +3,7 @@ import { createElement } from '../../utils';
 import { objectBase } from './objectBase';
 import { StorageItems } from '../../interfaces/usersInterface';
 import { LocalStorageItem } from '../../classes/lsNavigation';
-import { renderWordsPage } from './wordlistPage';
+import renderWordsPage from './wordlistPage';
 
 function renderChapter(num: number) {
   const cardCol = createElement('div', 'col') as HTMLElement;
@@ -20,7 +20,7 @@ function renderChapter(num: number) {
   cardText.innerHTML = `${objectBase.text[num]}`;
 
   cardCol.addEventListener('click', () => {
-    new LocalStorageItem().setChapter(num + 1);
+    new LocalStorageItem().setChapter(num);
     renderWordsPage(num);
   });
 

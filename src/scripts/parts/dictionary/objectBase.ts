@@ -26,9 +26,22 @@ const classesToBeUsed = {
   voluem: 'voluem-button',
   rightAnswer: 'right-answer',
   wrongAnswer: 'wrong-answer',
-  buttonNext: 'WP-btn-next',
-  buttonPrev: 'WP-btn-prev',
-  inputPageId: 'page-number',
 };
 
-export { objectBase, classesToBeUsed };
+const objStartHard = {
+  difficulty: 'hard',
+  optional: {
+    learned: false,
+  },
+};
+
+const objStartLearned = {
+  difficulty: 'weak',
+  optional: {
+    learned: true,
+  },
+};
+
+export {
+  objectBase, classesToBeUsed, objStartHard, objStartLearned,
+};

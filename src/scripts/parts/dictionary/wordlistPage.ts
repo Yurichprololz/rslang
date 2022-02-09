@@ -1,16 +1,216 @@
+/* eslint-disable no-param-reassign */
+import { createElement } from '../../utils';
 import { getWords, getWord } from '../../api/wordsF';
-import { classesToBeUsed, objectBase } from './objectBase';
-import { wordList, wordListItem } from './dictionaryLayouts';
+import {
+  classesToBeUsed, objectBase, objStartHard, objStartLearned,
+} from './objectBase';
+import { wordList, wordListItemFn } from './dictionaryLayouts';
+import { LocalStorageItem, StorageKeys } from '../../classes/lsNavigation';
+import { IWords } from '../../interfaces/wordsInterface';
+import DOMAIN from '../../api/domain';
+import { StorageItems } from '../../interfaces/usersInterface';
+import {
+  createUserWord, getUserWord, updateUserWord, daleteUserWord, getUserWords, getAggregatedWords,
+  getAggregatedWord,
+} from '../../api/userWordsF';
 
-function renderWord() {
+const lsItem = new LocalStorageItem();
 
-};
+function styleStandard(wordItem: HTMLElement, el: IWords) {
+  const word = wordItem.querySelector(`.${classesToBeUsed.word}`) as HTMLTitleElement;
+  const transcription = wordItem.querySelector(`.${classesToBeUsed.transcription}`) as HTMLTitleElement;
+  const translation = wordItem.querySelector(`.${classesToBeUsed.translation}`) as HTMLTitleElement;
+  const meaning = wordItem.querySelector(`.${classesToBeUsed.meaning}`) as HTMLTitleElement;
+  const meaningTranslation = wordItem.querySelector(`.${classesToBeUsed.meaningTranslation}`) as HTMLTitleElement;
+  const example = wordItem.querySelector(`.${classesToBeUsed.example}`) as HTMLTitleElement;
+  const exampleTranslation = wordItem.querySelector(`.${classesToBeUsed.exampleTranslation}`) as HTMLTitleElement;
+  const imgCont = wordItem.querySelector(`.${classesToBeUsed.img}`) as HTMLImageElement;
+  const deleteBtn = wordItem.querySelector(`.${classesToBeUsed.delete}`) as HTMLButtonElement;
+  const voluemBtn = wordItem.querySelector(`.${classesToBeUsed.voluem}`) as HTMLButtonElement;
+
+  word.innerHTML = `${el.word}`;
+  word.id = `${el.id}`;
+  transcription.innerHTML = `${el.transcription}`;
+  translation.innerHTML = `${el.wordTranslate}`;
+  meaning.innerHTML = `${el.textMeaning}`;
+  meaningTranslation.innerHTML = `${el.textMeaningTranslate}`;
+  example.innerHTML = `${el.textExample}`;
+  exampleTranslation.innerHTML = `${el.textExampleTranslate}`;
+  imgCont.src = `${DOMAIN}/${el.image}`;
+  deleteBtn.style.display = 'none'; // можно добавить возможность удалять слово. Сейчас кнопка просто скрыта
+
+  voluemBtn.addEventListener('click', () => {
+    const audio1 = document.createElement('audio');
+    audio1.src = `${DOMAIN}/${el.audio}`;
+    const audio2 = document.createElement('audio');
+    audio2.src = `${DOMAIN}/${el.audioMeaning}`;
+    const audio3 = document.createElement('audio');
+    audio3.src = `${DOMAIN}/${el.audioExample}`;
+    audio1.play();
+    audio1.addEventListener('ended', () => {
+      audio2.play();
+      audio2.addEventListener('ended', () => {
+        audio3.play();
+      });
+    });
+  });
+}
+
+function styleSpecial(wordItem: HTMLElement, num: number) {
+  const word = wordItem.querySelector(`.${classesToBeUsed.word}`) as HTMLTitleElement;
+  const inputDifficulty = wordItem.querySelector(`.${classesToBeUsed.difficulty}`) as HTMLInputElement;
+  const inputLearned = wordItem.querySelector(`.${classesToBeUsed.learned}`) as HTMLInputElement;
+  const markDifficulty = wordItem.querySelector('.hard-mark') as HTMLTitleElement;
+  markDifficulty.style.display = 'none';
+  const markLearned = wordItem.querySelector('.learned-mark') as HTMLTitleElement;
+  markLearned.style.display = 'none';
+  const rightAnswers = wordItem.querySelector(`.${classesToBeUsed.rightAnswer}`) as HTMLTitleElement;
+  const wrongAnswers = wordItem.querySelector(`.${classesToBeUsed.wrongAnswer}`) as HTMLTitleElement;
+  const nodesForDisplayNone = [...wordItem.querySelectorAll('.display-none') as NodeListOf<HTMLDivElement>];
+
+  if (localStorage.getItem(StorageItems.id) && localStorage.getItem(StorageItems.token)) {
+    getUserWords().then((elem) => {
+      elem.forEach((element) => {
+        if (element.wordId === word.id) {
+          if (element.difficulty === 'hard') {
+            inputDifficulty.checked = true;
+            markDifficulty.style.display = 'inline';
+          }
+          if (element.optional?.learned === true) {
+            inputLearned.checked = true;
+            markLearned.style.display = 'inline';
+          }
+        }
+      });
+    });
+    inputLearned.addEventListener('change', () => {
+      if (inputLearned.checked && !inputDifficulty.checked) {
+        createUserWord(word.id, objStartLearned).then(() => {
+          markLearned.style.display = 'inline';
+        });
+      } else if (inputDifficulty.checked && inputLearned.checked) {
+        getUserWord(word.id).then((elem) => {
+          updateUserWord(word.id, { difficulty: 'light', optional: elem.optional });
+          markDifficulty.style.display = 'none';
+          inputDifficulty.checked = false;
+          markLearned.style.display = 'inline';
+        });
+      } else {
+        daleteUserWord(word.id);
+        markLearned.style.display = 'none';
+      }
+    });
+    inputDifficulty.addEventListener('change', () => {
+      if (!inputLearned.checked && inputDifficulty.checked) {
+        createUserWord(word.id, objStartHard).then(() => {
+          markDifficulty.style.display = 'inline';
+        });
+      } else if (inputDifficulty.checked && inputLearned.checked) {
+        getUserWord(word.id).then((elem) => {
+          updateUserWord(word.id, { difficulty: elem.difficulty, optional: { learned: false } });
+          markLearned.style.display = 'none';
+          inputLearned.checked = false;
+          markDifficulty.style.display = 'inline';
+        });
+      } else {
+        daleteUserWord(word.id);
+        markDifficulty.style.display = 'none';
+      }
+    });
+  } else {
+    nodesForDisplayNone.forEach((elem) => {
+      elem.style.display = 'none';
+      return true;
+    });
+  }
+}
+
+function renderWord(num: number, el: IWords) {
+  const wordItem = createElement('div', 'accordion-item') as HTMLElement;
+  wordItem.innerHTML = wordListItemFn(num);
+  styleStandard(wordItem, el);
+  styleSpecial(wordItem, num);
+
+  return wordItem;
+}
+
+function renderWords(main: HTMLElement) {
+  const wordContainer = main.querySelector('#accordionPanel') as HTMLDivElement;
+  wordContainer.innerHTML = '';
+  getWords(lsItem.getChapter(), lsItem.getWordlist())
+    .then((elem) => {
+      elem.forEach((el, i) => {
+        const word = renderWord(i + 1, el);
+        wordContainer?.append(word);
+      });
+    });
+}
+
+function renderUserWords(main: HTMLElement) {
+  const wordContainer = main.querySelector('#accordionPanel') as HTMLDivElement;
+  wordContainer.innerHTML = '';
+  getUserWords()
+    .then((elem) => {
+      elem.forEach((el, i) => {
+        if (el.difficulty === 'hard') {
+          getWord(el.wordId).then((element) => {
+            const word = renderWord(i + 1, element);
+            wordContainer?.append(word);
+          });
+        }
+      });
+    });
+}
+
+function operateButtons(main:HTMLElement, num:number) {
+  const buttonNext = <HTMLButtonElement>main.querySelector('.WP-btn-next');
+  const buttonPrev = <HTMLButtonElement>main.querySelector('.WP-btn-prev');
+  const inputNum = <HTMLInputElement>main.querySelector('.page-number');
+  lsItem.setWordlist(num);
+  renderWords(main);
+  if (lsItem.getWordlist() === 29) {
+    buttonNext.disabled = true;
+  } else {
+    buttonNext.disabled = false;
+  }
+  if (lsItem.getWordlist() === 0) {
+    buttonPrev.disabled = true;
+  } else {
+    buttonPrev.disabled = false;
+  }
+  inputNum.placeholder = `${num + 1}`;
+}
 
 function renderWordsPage(num: number) {
   const main = document.querySelector('main') as HTMLDivElement;
   main.innerHTML = wordList;
   const mainContainer = main.querySelector('.wordlist') as HTMLDivElement;
   mainContainer.classList.add(`colored-${objectBase.colors[num]}`);
+
+  if (num < 6) {
+    const buttonNext = <HTMLButtonElement>main.querySelector('.WP-btn-next');
+    if (lsItem.getWordlist() === 29) buttonNext.disabled = true;
+    const buttonPrev = <HTMLButtonElement>main.querySelector('.WP-btn-prev');
+    if (lsItem.getWordlist() === 0) buttonPrev.disabled = true;
+    const inputNum = <HTMLInputElement>main.querySelector('.page-number');
+    inputNum.placeholder = `${lsItem.getWordlist() + 1}`;
+    renderWords(main);
+    buttonNext.addEventListener('click', () => {
+      const a = lsItem.getWordlist() + 1;
+      operateButtons(main, a);
+    });
+    buttonPrev.addEventListener('click', () => {
+      const a = lsItem.getWordlist() - 1;
+      operateButtons(main, a);
+    });
+    inputNum.addEventListener('input', () => {
+      operateButtons(main, Number(inputNum.value));
+    });
+  } else {
+    const buttonTools = <HTMLDivElement>main.querySelector('.btn-toolbar');
+    buttonTools.style.display = 'none';
+    renderUserWords(main);
+  }
 }
 
-export { renderWordsPage };
+export default renderWordsPage;

@@ -36,8 +36,9 @@ enum StorageKeys{
 
 const localhostStartObj = {
   page: 'home',
-  chapter: 1,
-  wordlist: 1,
+  registration: null,
+  chapter: 0,
+  wordlist: 0,
   audio: null,
   sprint: null,
   statistics: null,

@@ -17,67 +17,67 @@ const chapterItem = `
     </div>
 </div>`;
 
-const wordListItem = `<div class="accordion-item">
-<h2 class="accordion-header" id="pHeading-1">
-  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pCollapse-1" aria-expanded="false" aria-controls="pCollapse-1">
-    <p class="h6 text-uppercase word-described px-1"></p>  
-    <!-- <span class="badge bg-warning rounded-pill px-1.5 mx-3">С</span> -->
-    <!-- <span class="badge bg-success rounded-pill px-1.5 mx-2 text-uppercase">И</span> -->
-  </button>
-</h2>
-<div id="pCollapse-1" class="accordion-collapse collapse" aria-labelledby="pHeading-1">
-  <div class="accordion-body">
-    <div class="row">
-      <p class="h6 px-1"> - <small class="text-muted word-transcription"></small> - <span class="h6 text-uppercase px-1 word-translation"> </span> </p> 
-    </div>
-    <div class="row">
-      <div class="col-md-4">
-        <figure class="figure" >
-          <img class="figure-img img-fluid rounded-circle" alt="...">
-          <figcaption class="figure-caption text-end"><button class="btn btn-outline-dark voluem-button">
-            Послушаешь? &#9658;
-          </button></figcaption>
-        </figure>
+function wordListItemFn(num: number) {
+  return `<h2 class="accordion-header" id="pHeading-${num}">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pCollapse-${num}" aria-expanded="false" aria-controls="pCollapse-${num}">
+      <p class="h6 text-uppercase word-described px-1"></p>  
+      <span class="badge bg-warning rounded-pill px-1.5 mx-3 hard-mark display-none">С</span>
+      <span class="badge bg-success rounded-pill px-1.5 mx-2 text-uppercase learned-mark display-none">И</span>
+    </button>
+  </h2>
+  <div id="pCollapse-${num}" class="accordion-collapse collapse" aria-labelledby="pHeading-${num}">
+    <div class="accordion-body">
+      <div class="row">
+        <p class="h6 px-1"> - <small class="text-muted word-transcription"></small> - <span class="h6 text-uppercase px-1 word-translation text-dark"> </span> </p> 
       </div>
-      <div class="col-md-8">
-        <div class="row">
-          <dt class="col-sm-3">Meaning / значение</dt>
+      <div class="row">
+        <div class="col-md-4">
+          <figure class="figure" >
+            <img class="figure-img img-fluid rounded-circle" alt="...">
+            <figcaption class="figure-caption text-end"><button class="btn btn-outline-dark voluem-button">
+              Послушаешь? &#9658;
+            </button></figcaption>
+          </figure>
+        </div>
+        <div class="col-md-8">
+          <div class="row">
+            <dt class="col-sm-3 text-dark">Meaning / значение</dt>
+              <dd class="col-sm-9">
+                <p class="meaning text-dark">aa</p>
+                <p class="meaning-translation text-dark"></p>
+              </dd>
+            <dt class="col-sm-3 text-dark">Example / пример</dt>
             <dd class="col-sm-9">
-              <p class="meaning"></p>
-              <p class="meaning-translation"></p>
+              <p class="example text-dark"></p>
+              <p class="example-translation text-dark"></p>
             </dd>
-          <dt class="col-sm-3">Example / пример</dt>
-          <dd class="col-sm-9">
-            <p class="example"></p>
-            <p class="example-translation"></p>
-          </dd>
-        </div>
-        <div class="row">
-          <div class="form-check form-switch col-4">
-            <input class="form-check-input input-difficulty" type="checkbox" id="difficulty-chB-1">
-            <label class="form-check-label h6 text-warning" for="difficulty-chB-1">Я сложное?</label>
           </div>
-          <div class="form-check form-switch col-4">
-            <input class="form-check-input input-learned" type="checkbox" id="learned-chB-1">
-            <label class="form-check-label h6 text-success" for="learned-chB-1">Я уже изучено?</label>
+          <div class="row display-none">
+            <div class="form-check form-switch col-4">
+              <input class="form-check-input input-difficulty" type="checkbox" id="difficulty-chB-${num}">
+              <label class="form-check-label h6 text-warning" for="difficulty-chB-${num}">Я сложное?</label>
+            </div>
+            <div class="form-check form-switch col-4">
+              <input class="form-check-input input-learned" type="checkbox" id="learned-chB-${num}">
+              <label class="form-check-label h6 text-success " for="learned-chB-${num}">Я уже изучено?</label>
+            </div>
+            <div class="col-4">
+              <button type="button" class="btn btn-outline-danger delete-button">&#128465;</button>
+            </div>
           </div>
-          <div class="col-4">
-            <button type="button" class="btn btn-outline-danger delete-button">&#128465;</button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <p class="h6 px-1"><small class="text-muted">Правильных попыток: </small> <span class="h6 text-uppercase text-success px-1 right-answer"></span> </p> 
-          </div>
-          <div class="col-6">
-            <p class="h6 px-1"> <small class="text-muted">Неправильных попыток: </small> <span class="h6 text-uppercase text-danger px-1 wrong-answer"> </span></p> 
+          <div class="row display-none">
+            <div class="col-6">
+              <p class="h6 px-1"><small class="text-muted">Правильных попыток: </small> <span class="h6 text-uppercase text-success px-1 right-answer"> 0 </span> </p> 
+            </div>
+            <div class="col-6">
+              <p class="h6 px-1"> <small class="text-muted">Неправильных попыток: </small> <span class="h6 text-uppercase text-danger px-1 wrong-answer"> 0 </span></p> 
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
-</div>`;
+  </div>`;
+}
 
 const wordList = `<div class="container py-3 wordlist">
 <h2 class="text-center text-white pb-3">... Словарик ...</h2>
@@ -101,5 +101,5 @@ const wordList = `<div class="container py-3 wordlist">
 // https://rslang-yurasasha.herokuapp.com/files/02_0626.jpg;
 
 export {
-  chpterLayout, chapterItem, wordList, wordListItem,
+  chpterLayout, chapterItem, wordList, wordListItemFn,
 };

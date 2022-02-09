@@ -1,5 +1,6 @@
 import renderChaptersPage from '../dictionary/chapterPage';
 import mainHomeLayout from './mainLayout';
+import { LocalStorageItem, StorageKeys } from '../../classes/lsNavigation';
 
 function switchClass(buttonParam: HTMLLIElement): void {
   const buttons = document.querySelectorAll('.nav-link');
@@ -21,11 +22,13 @@ export default function headerButtonsHandler(head: HTMLElement): void {
   homeDictionaryBtn.addEventListener('click', (ev:Event) => {
     switchClass(<HTMLLIElement>ev.target);
     renderChaptersPage();
+    new LocalStorageItem().setPage(StorageKeys.chapter);
   });
 
   homeBtn.addEventListener('click', (ev:Event) => {
     switchClass(<HTMLLIElement>ev.target);
     const main = document.querySelector('main') as HTMLElement;
     main.innerHTML = mainHomeLayout;
+    new LocalStorageItem().setPage(StorageKeys.home);
   });
 }
