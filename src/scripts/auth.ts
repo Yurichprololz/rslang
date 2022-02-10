@@ -204,11 +204,11 @@ function updateHeader(element:HTMLElement): HTMLElement {
               <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
             </a>
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-              <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
-              <li><a href="#" class="nav-link px-2 text-white">Электронный учебник</a></li>
-              <li><a href="#" class="nav-link px-2 text-white">Аудиовызов</a></li>
-              <li><a href="#" class="nav-link px-2 text-white">Спринт</a></li>
-              <li><a href="#" class="nav-link px-2 text-white">Статистика</a></li>
+              <li><a href="#" class="nav-link px-2 text-secondary" id="home">Home</a></li>
+              <li><a href="#" class="nav-link px-2 text-white" id="dictionary">Электронный учебник</a></li>
+              <li><a href="#" class="nav-link px-2 text-white" id="audio-call">Аудиовызов</a></li>
+              <li><a href="#" class="nav-link px-2 text-white" id="sprint">Спринт</a></li>
+              <li><a href="#" class="nav-link px-2 text-white" id="statistics">Статистика</a></li>
             </ul>
             ${authPanel}
           </div>

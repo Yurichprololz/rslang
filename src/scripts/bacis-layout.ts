@@ -1,6 +1,6 @@
 import { createElement } from './utils';
 import headerButtonsHandler from './parts/home/headerButtonsHandler';
-import { LocalStorageItem, StorageKeys } from './classes/lsNavigation';
+import { LocalStorageItem } from './classes/lsNavigation';
 import updateHeader from './auth';
 
 function createHeader():HTMLElement {
