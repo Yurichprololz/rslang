@@ -28,6 +28,7 @@ interface IUserObjBody {
 
 enum StorageItems {
   id = 'rslangID',
+  name = 'name',
   token = 'rslangToken',
   refreshToken = 'rslangRefreshToken',
 }
