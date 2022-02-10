@@ -5,13 +5,12 @@ import {
   classesToBeUsed, objectBase, objStartHard, objStartLearned,
 } from './objectBase';
 import { wordList, wordListItemFn } from './dictionaryLayouts';
-import { LocalStorageItem, StorageKeys } from '../../classes/lsNavigation';
+import { LocalStorageItem } from '../../classes/lsNavigation';
 import { IWords } from '../../interfaces/wordsInterface';
 import DOMAIN from '../../api/domain';
 import { StorageItems } from '../../interfaces/usersInterface';
 import {
-  createUserWord, getUserWord, updateUserWord, daleteUserWord, getUserWords, getAggregatedWords,
-  getAggregatedWord,
+  createUserWord, getUserWord, updateUserWord, daleteUserWord, getUserWords,
 } from '../../api/userWordsF';
 
 const lsItem = new LocalStorageItem();
@@ -64,8 +63,8 @@ function styleSpecial(wordItem: HTMLElement, num: number) {
   markDifficulty.style.display = 'none';
   const markLearned = wordItem.querySelector('.learned-mark') as HTMLTitleElement;
   markLearned.style.display = 'none';
-  const rightAnswers = wordItem.querySelector(`.${classesToBeUsed.rightAnswer}`) as HTMLTitleElement;
-  const wrongAnswers = wordItem.querySelector(`.${classesToBeUsed.wrongAnswer}`) as HTMLTitleElement;
+  // const rightA = wordItem.querySelector(`.${classesToBeUsed.rightAnswer}`) as HTMLTitleElement;
+  // const wrongA = wordItem.querySelector(`.${classesToBeUsed.wrongAnswer}`) as HTMLTitleElement;
   const nodesForDisplayNone = [...wordItem.querySelectorAll('.display-none') as NodeListOf<HTMLDivElement>];
 
   if (localStorage.getItem(StorageItems.id) && localStorage.getItem(StorageItems.token)) {

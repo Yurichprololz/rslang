@@ -98,7 +98,6 @@ const wordList = `<div class="container py-3 wordlist">
     </div>
 </div>
 </div>`;
-// https://rslang-yurasasha.herokuapp.com/files/02_0626.jpg;
 
 export {
   chpterLayout, chapterItem, wordList, wordListItemFn,
