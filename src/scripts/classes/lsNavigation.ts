@@ -29,7 +29,7 @@ enum StorageKeys{
   registration = 'registration',
   chapter = 'chapter',
   wordlist = 'wordlist',
-  audio = 'audio',
+  audio = 'audio-call',
   sprint = 'sprint',
   statistics = 'statistics',
 }

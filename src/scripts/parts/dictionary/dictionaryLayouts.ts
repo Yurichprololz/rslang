@@ -96,6 +96,10 @@ const wordList = `<div class="container py-3 wordlist">
   </div>
     <div class="accordion col-xl-8 col-md-12" id="accordionPanel">
     </div>
+    <div class="d-flex col-6 m-3 justify-content-between gap-2">
+      <button type="button" class="btn btn-outline-warning btn-lg px-2" id="sprint-play">Играем SPRINT</button>
+      <button type="button" class="btn btn-outline-danger btn-lg px-2" id="sprint-audio-call">Играем AUDIO-CALL</button>
+    </div>
 </div>
 </div>`;
 
