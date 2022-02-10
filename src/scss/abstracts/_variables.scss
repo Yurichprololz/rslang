@@ -1,0 +1,21 @@
+@use "sass:color";
+
+$colorArr: (
+  'purple': color.change(purple, $alpha: 0.4),
+  'blue': color.change(blue, $alpha: 0.5),
+  'cyan': color.change(rgb(20, 178, 178), $alpha: 0.8),
+  'teal': color.change(teal, $alpha: 0.5),
+  'green': color.change(green, $alpha: 0.5), 
+  'yellow': color.change(rgb(168, 168, 67), $alpha: 1),
+  'orange': color.change(orange, $alpha: 0.85),
+);
+
+$colorArrBg: (
+  'purple': color.change(purple, $alpha: 0.3),
+  'blue': color.change(blue, $alpha: 0.3),
+  'cyan': color.change(rgb(20, 178, 178), $alpha: 0.3),
+  'teal': color.change(teal, $alpha: 0.3),
+  'green': color.change(green, $alpha: 0.3), 
+  'yellow': color.change(rgb(168, 168, 67), $alpha: 0.3),
+  'orange': color.change(orange, $alpha: 0.3),
+);

@@ -1,9 +1,12 @@
 import { createElement } from './utils';
+import headerButtonsHandler from './parts/home/headerButtonsHandler';
+import { LocalStorageItem, StorageKeys } from './classes/lsNavigation';
 import updateHeader from './auth';
 
 function createHeader():HTMLElement {
   const header = createElement('header', 'header p-3 bg-dark text-white') as HTMLElement;
   updateHeader(header);
+  headerButtonsHandler(header);
   return header;
 }
 
@@ -61,6 +64,7 @@ function renderBasicLayout():void {
   document.body.append(header);
   document.body.append(main);
   document.body.append(footer);
+  new LocalStorageItem().startStorage();
 }
 
 export default renderBasicLayout;

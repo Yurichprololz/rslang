@@ -41,8 +41,6 @@ enum WordOptional{
 }
 interface IWordOptional {
   learned: boolean,
-  failure: number,
-  success: number,
 }
 interface IUserWordsObj {
   difficulty: string,
@@ -52,7 +50,8 @@ interface IUserWordsObj {
 interface IUserWords {
   userId: string,
   wordId: string,
-  word: IUserWordsObj
+  difficulty: string,
+  optional?: IWordOptional,
 }
 
 enum ForAggrObj {
