@@ -5,7 +5,7 @@ import {
   classesToBeUsed, objectBase, objStartHard, objStartLearned,
 } from './objectBase';
 import { wordList, wordListItemFn } from './dictionaryLayouts';
-import { LocalStorageItem } from '../../classes/lsNavigation';
+import { LocalStorageItem, StorageKeys } from '../../classes/lsNavigation';
 import { IWords } from '../../interfaces/wordsInterface';
 import DOMAIN from '../../api/domain';
 import { StorageItems } from '../../interfaces/usersInterface';
@@ -55,7 +55,7 @@ function styleStandard(wordItem: HTMLElement, el: IWords) {
   });
 }
 
-function styleSpecial(wordItem: HTMLElement, num: number) {
+function styleSpecial(wordItem: HTMLElement) {
   const word = wordItem.querySelector(`.${classesToBeUsed.word}`) as HTMLTitleElement;
   const inputDifficulty = wordItem.querySelector(`.${classesToBeUsed.difficulty}`) as HTMLInputElement;
   const inputLearned = wordItem.querySelector(`.${classesToBeUsed.learned}`) as HTMLInputElement;
@@ -128,7 +128,7 @@ function renderWord(num: number, el: IWords) {
   const wordItem = createElement('div', 'accordion-item') as HTMLElement;
   wordItem.innerHTML = wordListItemFn(num);
   styleStandard(wordItem, el);
-  styleSpecial(wordItem, num);
+  styleSpecial(wordItem);
 
   return wordItem;
 }
@@ -210,6 +210,16 @@ function renderWordsPage(num: number) {
     buttonTools.style.display = 'none';
     renderUserWords(main);
   }
+  const btnPlaySprint = main.querySelector('#sprint-play') as HTMLButtonElement;
+  const btnPlayAudio = main.querySelector('#sprint-audio-call') as HTMLButtonElement;
+  btnPlaySprint.addEventListener('click', () => {
+    lsItem.setPage(StorageKeys.sprint);
+    // место для кода
+  });
+  btnPlayAudio.addEventListener('click', () => {
+    lsItem.setPage(StorageKeys.audio);
+    // место для кода
+  });
 }
 
 export default renderWordsPage;

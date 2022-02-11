@@ -1,4 +1,5 @@
 import renderChaptersPage from '../dictionary/chapterPage';
+import renderChaptersMiniPage from '../mini-games/chapterMiniPage';
 import mainHomeLayout from './mainLayout';
 import { LocalStorageItem, StorageKeys } from '../../classes/lsNavigation';
 
@@ -16,7 +17,8 @@ function switchClass(buttonParam: HTMLLIElement): void {
 
 export default function headerButtonsHandler(head: HTMLElement): void {
   const homeDictionaryBtn = head.querySelector('#dictionary') as HTMLLIElement;
-  // const homeSprintButton = head.querySelector('#sprint') as HTMLButtonElement;
+  const homeSprintButton = head.querySelector('#sprint') as HTMLButtonElement;
+  const homeAudioCallButton = head.querySelector('#audio-call') as HTMLButtonElement;
   const homeBtn = head.querySelector('#home') as HTMLLIElement;
 
   homeDictionaryBtn.addEventListener('click', (ev:Event) => {
@@ -30,5 +32,16 @@ export default function headerButtonsHandler(head: HTMLElement): void {
     const main = document.querySelector('main') as HTMLElement;
     main.innerHTML = mainHomeLayout;
     new LocalStorageItem().setPage(StorageKeys.home);
+  });
+
+  homeSprintButton.addEventListener('click', (ev:Event) => {
+    switchClass(<HTMLLIElement>ev.target);
+    new LocalStorageItem().setPage(StorageKeys.sprint);
+    renderChaptersMiniPage();
+  });
+  homeAudioCallButton.addEventListener('click', (ev:Event) => {
+    switchClass(<HTMLLIElement>ev.target);
+    new LocalStorageItem().setPage(StorageKeys.audio);
+    renderChaptersMiniPage();
   });
 }
