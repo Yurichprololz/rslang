@@ -1,0 +1,154 @@
+/* eslint-disable no-return-assign */
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-underscore-dangle */
+
+import AudioManipuator from './manipulateAudio';
+import { LocalStorageItem } from './lsNavigation';
+import { getWords, getWord } from '../api/wordsF';
+import randomInt from '../units/rendomInt';
+
+// interface ForSingleton{
+//   playID: number,
+
+//   changeSong: VoidReturnFN,
+//   playSong: VoidReturnFN,
+//   changeMethod: VoidReturnFN,
+//   pauseSong: VoidReturnFN,
+// }
+
+const lsItem = new LocalStorageItem();
+
+export default class SingletonWord {
+  protected static _instance :SingletonWord;
+
+  audio: AudioManipuator;
+
+  score: number;
+
+  value: number;
+
+  totalAttempts: number;
+
+  rightAttempts: number;
+
+  maxRightAttempts: number;
+
+  attemptsForFlash: number;
+
+  mainArr: [id:string, word: string, translation:string][];
+
+  wrongArr: string[];
+
+  rightArr: string[];
+
+  constructor() {
+    if (SingletonWord._instance) {
+      throw new Error('Instantiation failed: /n use SingletonWord.getInstance() instead of new.');
+    }
+    SingletonWord._instance = this;
+    this.audio = new AudioManipuator();
+    this.score = 0;
+    this.value = 10;
+    this.totalAttempts = 0;
+    this.rightAttempts = 0;
+    this.maxRightAttempts = 0;
+    this.attemptsForFlash = 0;
+    this.wrongArr = [];
+    this.rightArr = [];
+    this.mainArr = [];
+  }
+
+  public static getInstance() :SingletonWord {
+    if (SingletonWord._instance) {
+      return SingletonWord._instance;
+    }
+    return SingletonWord._instance = new SingletonWord();
+  }
+
+  startMainArr() {
+    if (!lsItem.getWordlist() && lsItem.getChapter() !== 6) {
+      Array.from({ length: 10 }, (v, i) => i).map(async () => {
+        await getWords(lsItem.getChapter(), randomInt(0, 30)).then((el) => {
+          Array.from({ length: 6 }, (v, i) => i).map(() => {
+            const wordT = el[randomInt(0, 20)];
+            this.mainArr.push([wordT.id, wordT.word, wordT.wordTranslate]);
+            return true;
+          });
+        });
+        return true;
+      });
+    }
+  }
+
+  renderTestItem(numItem: number) {
+    const main = document.querySelector('main') as HTMLDivElement;
+    const ranking = main.querySelector('.ranking') as HTMLTitleElement;
+    const flashNodes = main.querySelectorAll('svg') as NodeListOf<SVGSVGElement>;
+    const word = main.querySelector('.word') as HTMLTitleElement;
+    const translation = main.querySelector('.translation') as HTMLTitleElement;
+    const btnsContainer = main.querySelector('.buttons-container') as HTMLDivElement;
+    const btnRight = main.querySelector('.right') as HTMLButtonElement;
+    const btnWrong = main.querySelector('.wrong') as HTMLButtonElement;
+    ranking.innerHTML = `${this.score}`;
+    Array.from({ length: 4 }, (v, i) => i).map((el) => {
+      if (this.attemptsForFlash > el) {
+        flashNodes[el].classList.add('filled');
+      } else {
+        flashNodes[el].classList.remove('filled');
+      }
+      return true;
+    });
+    const currentArr = this.mainArr[numItem];
+    word.innerHTML = `${currentArr[1]}`;
+
+    if (Math.round(Math.random())) {
+      btnRight.id = `${currentArr[0]}`;
+      btnWrong.id = `${this.mainArr[randomInt(0, 60)]}`;
+      translation.innerHTML = `${currentArr[2]}`;
+    } else {
+      const a = this.mainArr[randomInt(0, 60)];
+      btnRight.id = `${a[0]}`;
+      btnWrong.id = `${currentArr[0]}`;
+      translation.innerHTML = `${a[2]}`;
+    }
+
+    btnsContainer.addEventListener('click', (ev: MouseEvent) => {
+      const button = <HTMLButtonElement>(<HTMLDivElement>ev.target).closest('button');
+      if (button.id === currentArr[0]) {
+        this.rightAnsverF();
+        this.rightArr.push(currentArr[0]);
+        this.renderTestItem(numItem + 1);
+      } else {
+        this.wrongAnsverF();
+        this.wrongArr.push(currentArr[0]);
+        this.renderTestItem(numItem + 1);
+      }
+    });
+  }
+
+  private rightAnsverF() {
+    console.log(this.attemptsForFlash);
+    this.totalAttempts += 1;
+    this.rightAttempts += 1;
+    if (this.attemptsForFlash < 4) {
+      this.score += this.value;
+      this.attemptsForFlash += 1;
+    } else {
+      this.score += this.value;
+      this.value += 10;
+      this.attemptsForFlash = 0;
+    }
+
+    if (this.rightAttempts > this.maxRightAttempts) {
+      this.maxRightAttempts = this.rightAttempts;
+    }
+    this.audio.rightAnswer();
+  }
+
+  private wrongAnsverF() {
+    this.totalAttempts += 1;
+    this.value = 10;
+    this.attemptsForFlash = 0;
+    this.audio.wrongAnswer();
+  }
+}

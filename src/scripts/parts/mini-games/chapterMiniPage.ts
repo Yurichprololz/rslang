@@ -2,6 +2,7 @@ import { StorageItems } from '../../interfaces/usersInterface';
 import { createElement } from '../../utils';
 import { objectBase } from '../dictionary/objectBase';
 import { LocalStorageItem } from '../../classes/lsNavigation';
+import renderPreGamePage from './preGame';
 
 const chpterLayout = ` 
 <div class="container dictionary py-3">
@@ -36,8 +37,10 @@ function renderChapterMini(num: number) {
   cardTitle.innerHTML = `${num + 1}`;
 
   cardCol.addEventListener('click', () => {
-    new LocalStorageItem().setChapter(num);
-    // ссылка на мини-игру
+    const lsItem = new LocalStorageItem();
+    lsItem.setChapter(num);
+    lsItem.setWordlist(null);
+    if (lsItem.getPage() === 'sprint') renderPreGamePage();
   });
 
   return cardCol;

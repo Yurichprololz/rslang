@@ -1,8 +1,8 @@
 type VoidReturnFN = () => void;
 type StringReturnFN = () => string;
-type NumberReturnFN = () => number;
+type NumberReturnFN = () => number | null;
 type StringGetFN = (k: string) => void;
-type NumberGetFN = (k: number) => void;
+type NumberGetFN = (k: number | null) => void;
 type IgetAny = (k: string) => string | number | null;
 type ISetAny = (k: string, b: string | number | null) => void;
 
@@ -63,19 +63,19 @@ class LocalStorageItem implements ForLocalStorageItem {
     return <number> this.getAny(StorageKeys.chapter);
   }
 
-  getWordlist():number {
-    return <number> this.getAny(StorageKeys.wordlist);
+  getWordlist():number | null {
+    return <number | null> this.getAny(StorageKeys.wordlist);
   }
 
   setPage(pageParam: string): void {
     this.setAny(StorageKeys.page, pageParam);
   }
 
-  setChapter(chapterNum: number): void {
+  setChapter(chapterNum: number | null): void {
     this.setAny(StorageKeys.chapter, chapterNum);
   }
 
-  setWordlist(wordlistNum: number): void {
+  setWordlist(wordlistNum: number | null): void {
     this.setAny(StorageKeys.wordlist, wordlistNum);
   }
 

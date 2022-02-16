@@ -25,6 +25,7 @@ export default function buildFilterStrF(obj: IAggrObj) {
 // const obj = {
 //   group: 2,
 //   page: 2,
+//   wordsPerPage: 1,
 //   filter: {
 //     'userWord.difficulty': 'hard',
 //   },
