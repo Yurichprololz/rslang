@@ -11,8 +11,6 @@ function renderGamePage(): void {
   const main = document.querySelector('main') as HTMLDivElement;
   main.innerHTML = game;
 
-  const containerGame = main.querySelector('.sprint-game') as HTMLDivElement;
-
   const btnClose = main.querySelector('.close-game') as HTMLButtonElement;
   const timer = main.querySelector('.timer') as HTMLTitleElement;
   let attempts = 0;
@@ -29,6 +27,7 @@ function renderGamePage(): void {
 
   let i = 60;
   const interval = setInterval(() => {
+    // console.log(STWord.mainArr.length, attempts, STWord.mainArr.length - 1 < attempts);
     timer.innerHTML = `${i}`;
     i -= 1;
     if (i === 4) {
@@ -54,6 +53,7 @@ function renderGamePage(): void {
   STWord.renderTestItem(attempts);
 
   btnsContainer.addEventListener('click', (ev: MouseEvent) => {
+    if (STWord.mainArr.length <= attempts) return;
     const button = <HTMLButtonElement>(<HTMLDivElement>ev.target).closest('button');
     const id: string = STWord.mainArr[attempts][0];
     if (button.id === id) {
@@ -69,8 +69,13 @@ function renderGamePage(): void {
     }
   });
 
-  containerGame.focus();
-  containerGame.addEventListener('keyup', (ev: KeyboardEvent) => {
+  document.addEventListener('keyup', forKeys);
+
+  function forKeys(ev: KeyboardEvent) {
+    if (STWord.mainArr.length <= attempts) {
+      document.removeEventListener('keyup', forKeys);
+      return;
+    }
     const buttons = main.querySelectorAll('button') as NodeListOf<HTMLButtonElement>;
     const id: string = STWord.mainArr[attempts][0];
     buttons.forEach((el) => {
@@ -101,7 +106,7 @@ function renderGamePage(): void {
       }
       return true;
     });
-  });
+  }
 }
 
 export default renderGamePage;

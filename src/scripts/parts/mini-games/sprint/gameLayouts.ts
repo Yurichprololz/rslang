@@ -156,17 +156,21 @@ const baseSprintResultLayout = `<main class="main bg-dark text-white">
             <p class="h4 text-uppercase text-center py-1">Вы набрали <span class="result-rank h2 text-decoration-underline"></span> очков</p>
         </div>
         <div class="row col-12 d-flex justify-content-center">
-            <div class="row col-11 d-flex i-know">
+            <div class="row col-11 d-flex">
                 <p class="h4 text-left py-3">Я знаю <span class="result-rank-right h4"></span></p>
+                <div class="row col-12 d-flex i-know">
+                </div>
             </div>
-            <div class="row col-11 d-flex i-don't-know">
+            <div class="row col-11 d-flex i-dont-know">
                 <p class="h4 text-left py-3">Я не знаю <span class="result-rank-wrong h4"></span></p>
+                <div class="row col-12 d-flex i-dont-know">
+                </div>
             </div>
         </div>
         <div class="row col-12 d-flex justify-content-center">
-            <div class="row col-6 ">
-            <button type="button" class="btn btn-primary back">Вернуться к меню</button> 
-        </div>
+            <div class="row col-6 py-3">
+                <button type="button" class="btn btn-secondary back">Вернуться к меню</button> 
+            </div>
         </div>
     </div>
 </div>    

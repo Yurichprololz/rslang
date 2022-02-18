@@ -91,10 +91,12 @@ export default class SingletonWord {
         });
         for (let counter = 0; counter < 3; counter += 1) {
           claimPrevAuth(1).then((el) => {
-            el.map((elem) => {
-              this.mainArr.push([elem.id, elem.word, elem.wordTranslate]);
-              return true;
-            });
+            if (el) {
+              el.map((elem) => {
+                this.mainArr.push([elem.id, elem.word, elem.wordTranslate]);
+                return true;
+              });
+            }
           });
         }
       } else {
@@ -106,10 +108,12 @@ export default class SingletonWord {
         });
         for (let counter = 0; counter < 3; counter += 1) {
           claimPrev(1).then((el) => {
-            el.map((elem) => {
-              this.mainArr.push([elem.id, elem.word, elem.wordTranslate]);
-              return true;
-            });
+            if (el) {
+              el.map((elem) => {
+                this.mainArr.push([elem.id, elem.word, elem.wordTranslate]);
+                return true;
+              });
+            }
           });
         }
       }
@@ -127,10 +131,12 @@ export default class SingletonWord {
         });
       for (let counter = 0; counter < 3; counter += 1) {
         claimPrevAuth(0).then((el) => {
-          el.map((elem) => {
-            this.mainArr.push([elem.id, elem.word, elem.wordTranslate]);
-            return true;
-          });
+          if (el) {
+            el.map((elem) => {
+              this.mainArr.push([elem.id, elem.word, elem.wordTranslate]);
+              return true;
+            });
+          }
         });
       }
     }
@@ -140,7 +146,7 @@ export default class SingletonWord {
       const a = (numID && wpNumber >= 0)
         ? await getWords(lsItem.getChapter(), wpNumber)
         : await getWords(lsItem.getChapter() - 1, randomInt(0, 30));
-
+      if (lsItem.getChapter() - 1 < 0) return null;
       return a;
     }
 
@@ -166,6 +172,7 @@ export default class SingletonWord {
             ],
           },
         };
+      if (lsItem.getChapter() - 1 < 0) return null;
       const a = await getAggregatedWords(obj);
       return a;
     }
