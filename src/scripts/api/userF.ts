@@ -4,7 +4,8 @@ import {
 } from '../interfaces/usersInterface';
 import { General, SubGeneral } from '../interfaces/generalEnum';
 
-async function signInUser(emailParam: string, passwordParam: string):Promise<number | IAuth> {
+async function signInUser(emailParam: string, passwordParam: string)
+  :Promise<number | IAuth > {
   const objBody:IUserObjBody = {
     email: emailParam,
     password: passwordParam,
@@ -24,6 +25,10 @@ async function signInUser(emailParam: string, passwordParam: string):Promise<num
     localStorage.setItem(StorageItems.id, content.userId);
     localStorage.setItem(StorageItems.name, `${content.name}`);
     return content;
+  }
+  if (rawResponse.status === 403) {
+    await refreshToken();
+    return signInUser(emailParam, passwordParam);
   }
   return rawResponse.status;
 }
