@@ -1,0 +1,30 @@
+.result {
+    position: relative;
+    width: 60%;
+    margin: 0 auto;
+    border-radius: 15px;
+    background-color: tomato;
+
+    &__title {
+        text-align: center;
+    }
+
+    &__table {
+        padding: 20px;
+    }
+
+    &__audio {
+        width: 22px;
+        height: 22px;
+    outline: none;
+    border: none;
+    background-image: url(../assets/images/boombox.svg);
+    background-size: contain;
+    background-color: transparent;
+    }
+    & .close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+}

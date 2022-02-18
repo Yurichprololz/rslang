@@ -9,4 +9,17 @@ a{
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
+    user-select: none;
+
+ }
+
+ body {
+   min-height: 100vh;
+   --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+ }
+
+ .main_full{
+    min-height: 100vh;
+    padding-top: 30px;
  }

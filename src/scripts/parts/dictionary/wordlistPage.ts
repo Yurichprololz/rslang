@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { createElement } from '../../utils';
+import { createElement, getFullMain } from '../../utils';
 import { getWords, getWord } from '../../api/wordsF';
 import {
   classesToBeUsed, objectBase, objStartHard, objStartLearned,
@@ -12,6 +12,7 @@ import { StorageItems } from '../../interfaces/usersInterface';
 import {
   createUserWord, getUserWord, updateUserWord, daleteUserWord, getUserWords,
 } from '../../api/userWordsF';
+import createGame from '../audio-call/audio-call';
 
 const lsItem = new LocalStorageItem();
 
@@ -218,7 +219,8 @@ function renderWordsPage(num: number) {
   });
   btnPlayAudio.addEventListener('click', () => {
     lsItem.setPage(StorageKeys.audio);
-    // место для кода
+    createGame(new LocalStorageItem().getChapter(), false);
+    getFullMain();
   });
 }
 
