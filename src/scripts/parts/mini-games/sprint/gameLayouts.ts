@@ -3,7 +3,7 @@ const prevGame = `<main class="main bg-dark text-white">
     <div class="col-8  bg-midi-dack h-50 d-flex flex-column align-items-center justify-content-center">
         <p class="h1">Приготовьтесь:</p>
         <div class="count-container">
-            <p class="h2 three-to-one">7</p>
+            <p class="h2 three-to-one">8</p>
         </div>
     </div>
 </div>    
@@ -14,8 +14,13 @@ const game = `
     <div class="col-8 bg-midi-dack d-flex flex-column align-items-start">
         <button type="button" class="btn-close btn-close-white close-game" aria-label="Close"></button>
         <div class="row col-12 sensors-row align-items-center">
-            <div class="col-4 text-center">
-                <p class="h2 px-1 ranking"></p> 
+            <div class="row col-4 d-flex align-items-center justify-content-center">
+                <div class="col-2 text-center mx-2"> 
+                    <p class="h2 px-1 ranking"></p>
+                </div>
+                <div class="col-2 text-center mx-2"> 
+                    <p class="h2 px-1 score-rate"></p>
+                </div>
             </div>
             <div class="col-4 d-flex justify-content-center">
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg"

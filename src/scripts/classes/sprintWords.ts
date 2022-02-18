@@ -2,7 +2,6 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-underscore-dangle */
 
-import AudioManipuator from './manipulateAudio';
 import { LocalStorageItem } from './lsNavigation';
 import { getWords, getWord } from '../api/wordsF';
 import randomInt from '../units/rendomInt';
@@ -14,8 +13,6 @@ const lsItem = new LocalStorageItem();
 
 export default class SingletonWord {
   protected static _instance :SingletonWord;
-
-  audio: AudioManipuator;
 
   score: number;
 
@@ -40,7 +37,6 @@ export default class SingletonWord {
       throw new Error('Instantiation failed: /n use SingletonWord.getInstance() instead of new.');
     }
     SingletonWord._instance = this;
-    this.audio = new AudioManipuator();
     this.score = 0;
     this.value = 10;
     this.totalAttempts = 0;
@@ -85,15 +81,15 @@ export default class SingletonWord {
         };
         getAggregatedWords(obj).then((el) => {
           el.map((elem) => {
-            this.mainArr.push([elem.id, elem.word, elem.wordTranslate]);
+            this.mainArr.push([elem._id, elem.word, elem.wordTranslate]);
             return true;
           });
         });
-        for (let counter = 0; counter < 3; counter += 1) {
+        for (let counter = 0; counter < 7; counter += 1) {
           claimPrevAuth(1).then((el) => {
             if (el) {
               el.map((elem) => {
-                this.mainArr.push([elem.id, elem.word, elem.wordTranslate]);
+                this.mainArr.push([elem._id, elem.word, elem.wordTranslate]);
                 return true;
               });
             }
@@ -129,11 +125,11 @@ export default class SingletonWord {
             return true;
           });
         });
-      for (let counter = 0; counter < 3; counter += 1) {
+      for (let counter = 0; counter < 7; counter += 1) {
         claimPrevAuth(0).then((el) => {
           if (el) {
             el.map((elem) => {
-              this.mainArr.push([elem.id, elem.word, elem.wordTranslate]);
+              this.mainArr.push([elem._id, elem.word, elem.wordTranslate]);
               return true;
             });
           }
@@ -159,7 +155,7 @@ export default class SingletonWord {
           filter: {
             $or: [
               { 'userWord.optional.learned': 'false' },
-              { userWord: 'null' },
+              { userWord: null },
             ],
           },
         } : {
@@ -168,7 +164,7 @@ export default class SingletonWord {
           filter: {
             $or: [
               { 'userWord.optional.learned': 'false' },
-              { userWord: 'null' },
+              { userWord: null },
             ],
           },
         };
@@ -181,13 +177,14 @@ export default class SingletonWord {
   renderTestItem(numItem: number) {
     const main = document.querySelector('main') as HTMLDivElement;
     const ranking = main.querySelector('.ranking') as HTMLTitleElement;
+    const scoreRate = main.querySelector('.score-rate') as HTMLTitleElement;
     const flashNodes = main.querySelectorAll('svg') as NodeListOf<SVGSVGElement>;
     const word = main.querySelector('.word') as HTMLTitleElement;
     const translation = main.querySelector('.translation') as HTMLTitleElement;
     const btnRight = main.querySelector('.right') as HTMLButtonElement;
     const btnWrong = main.querySelector('.wrong') as HTMLButtonElement;
     ranking.innerHTML = `${this.score}`;
-
+    scoreRate.innerHTML = `+${this.value}`;
     Array.from({ length: 4 }, (v, i) => i).map((el) => {
       if (this.attemptsForFlash > el) {
         flashNodes[el].classList.add('filled');
@@ -201,10 +198,10 @@ export default class SingletonWord {
 
     if (Math.round(Math.random())) {
       btnRight.id = `${currentArr[0]}`;
-      btnWrong.id = `${this.mainArr[randomInt(0, 60)]}`;
+      btnWrong.id = `${this.mainArr[randomInt(0, this.mainArr.length)]}`;
       translation.innerHTML = `${currentArr[2]}`;
     } else {
-      const a = this.mainArr[randomInt(0, 60)];
+      const a = this.mainArr[randomInt(0, this.mainArr.length)];
       btnRight.id = `${a[0]}`;
       btnWrong.id = `${currentArr[0]}`;
       translation.innerHTML = `${a[2]}`;

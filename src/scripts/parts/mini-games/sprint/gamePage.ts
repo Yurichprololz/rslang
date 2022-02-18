@@ -18,6 +18,7 @@ function renderGamePage(): void {
   const btnsContainer = main.querySelector('.buttons-container') as HTMLDivElement;
 
   btnClose.addEventListener('click', () => {
+    STWord.zeroResults();
     renderChaptersMiniPage();
     const header = document.querySelector('header') as HTMLDivElement;
     const footer = document.querySelector('footer') as HTMLDivElement;
@@ -27,7 +28,6 @@ function renderGamePage(): void {
 
   let i = 60;
   const interval = setInterval(() => {
-    // console.log(STWord.mainArr.length, attempts, STWord.mainArr.length - 1 < attempts);
     timer.innerHTML = `${i}`;
     i -= 1;
     if (i === 4) {
