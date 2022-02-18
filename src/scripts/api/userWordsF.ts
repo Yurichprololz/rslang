@@ -39,6 +39,9 @@ async function createUserWord(wordId: string, wordObj: IUserWordsObj) {
     },
     body: JSON.stringify(wordObj),
   });
+  if (rawResponse.status === 417) {
+    return updateUserWord(wordId, wordObj);
+  }
   const content: IUserWords = await rawResponse.json();
   return content;
 }

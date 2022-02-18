@@ -1,7 +1,8 @@
 import { StorageItems } from '../../interfaces/usersInterface';
-import { createElement } from '../../utils';
+import { createElement, getFullMain } from '../../utils';
 import { objectBase } from '../dictionary/objectBase';
 import { LocalStorageItem } from '../../classes/lsNavigation';
+import createGame from '../audio-call/audio-call';
 
 const chpterLayout = ` 
 <div class="container dictionary py-3">
@@ -31,7 +32,10 @@ function renderChapterMini(num: number) {
 
   cardCol.addEventListener('click', () => {
     new LocalStorageItem().setChapter(num);
-    // ссылка на мини-игру
+    if (new LocalStorageItem().getPage() === 'audio-call') {
+      createGame(num, true);
+    }
+    getFullMain();
   });
 
   return cardCol;
