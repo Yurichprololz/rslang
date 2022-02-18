@@ -3,36 +3,19 @@ import gameObject from '../parts/mini-games/sprint/objectBase';
 export default class AudioManipuator {
   audios;
 
-  audio: HTMLAudioElement;
-
   constructor() {
     this.audios = gameObject;
-    this.audio = document.createElement('audio');
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  forAnswers(lingStr: string) {
-    this.audio.src = `assets/sounds/${lingStr}`;
-    this.audio.play();
   }
 
   rightAnswer() {
-    this.forAnswers(`${this.audios.music.rightA}`);
+    const audio = document.createElement('audio');
+    audio.src = `assets/sounds/${this.audios.music.rightA}`;
+    audio.play();
   }
 
   wrongAnswer() {
-    this.forAnswers(`${this.audios.music.wrongA}`);
-  }
-
-  endGameGood() {
-    this.forAnswers(`${this.audios.music.positive}`);
-  }
-
-  resultGood() {
-    this.forAnswers(`${this.audios.music.negative}`);
-  }
-
-  resultBad() {
-    this.forAnswers(`${this.audios.music.clock}`);
+    const audio1 = document.createElement('audio');
+    audio1.src = `assets/sounds/${this.audios.music.wrongA}`;
+    audio1.play();
   }
 }

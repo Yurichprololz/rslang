@@ -8,8 +8,8 @@ const prevGame = `<main class="main bg-dark text-white">
     </div>
 </div>    
 </main>`;
-
-const game = `<main class="main bg-dark text-white">
+// <main class="main bg-dark text-white"></main>
+const game = `
 <div class=" container sprint-game d-flex align-items-center justify-content-center">
     <div class="col-8 bg-midi-dack d-flex flex-column align-items-start">
         <button type="button" class="btn-close btn-close-white close-game" aria-label="Close"></button>
@@ -85,23 +85,23 @@ const game = `<main class="main bg-dark text-white">
         </div>
         <div class="row col-12 pt-3 justify-content-center buttons-container">
             <div class="col-6 d-flex justify-content-end">
-                <button type="button" class="btn btn-danger btn-lg px-5 right">верно</button>
+                <button type="button" class="btn btn-success btn-lg px-5 right">верно</button>
             </div>
             <div class="col-6 d-flex justify-content-start">
-                <button type="button" class="btn btn-success btn-lg px-5 wrong">неверно</button>
+                <button type="button" class="btn btn-danger btn-lg px-5 wrong">неверно</button>
             </div>
         </div>
         <div class="row col-12 justify-content-center">
             <div class="col-6 d-flex justify-content-end">
-                <p class="h2">&#8592;</p>
+                <p class="h2 arrow-left">&#8592;</p>
             </div>
             <div class="col-6 d-flex justify-content-start">
-                <p class="h2">&#8594;</p>
+                <p class="h2 arrow-right">&#8594;</p>
             </div>
         </div>
     </div>
 </div>    
-</main>`;
+`;
 
 const wrongResultItem = `<div class="col-12 d-flex flex-row align-items-baseline result-box-wrong">
     <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="4vmin" height="4vmin" viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
@@ -148,7 +148,7 @@ c1 -511 1 -1347 0 -1858z m-1708 929 l0 -680 -340 0 -340 0 0 680 0 680 340 0
 const baseSprintResultLayout = `<main class="main bg-dark text-white">
 <div class="container sprint-game d-flex align-items-center justify-content-center">
     <div class="col-md-7 col-12 bg-midi-results d-flex flex-column align-items-start">
-        <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
+        <button type="button" class="btn-close btn-close-white close-game" aria-label="Close"></button>
         <div class="row col-12">
             <p class="h2 text-uppercase text-center py-3">Результаты</p>
         </div>
@@ -156,16 +156,16 @@ const baseSprintResultLayout = `<main class="main bg-dark text-white">
             <p class="h4 text-uppercase text-center py-1">Вы набрали <span class="result-rank h2 text-decoration-underline"></span> очков</p>
         </div>
         <div class="row col-12 d-flex justify-content-center">
-            <div class="row col-11 d-flex">
+            <div class="row col-11 d-flex i-know">
                 <p class="h4 text-left py-3">Я знаю <span class="result-rank-right h4"></span></p>
             </div>
-            <div class="row col-11 d-flex">
+            <div class="row col-11 d-flex i-don't-know">
                 <p class="h4 text-left py-3">Я не знаю <span class="result-rank-wrong h4"></span></p>
             </div>
         </div>
         <div class="row col-12 d-flex justify-content-center">
             <div class="row col-6 ">
-            <button type="button" class="btn btn-primary">Вернуться к меню</button> 
+            <button type="button" class="btn btn-primary back">Вернуться к меню</button> 
         </div>
         </div>
     </div>

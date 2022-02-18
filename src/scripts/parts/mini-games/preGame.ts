@@ -13,7 +13,7 @@ function renderPreGamePage(): void {
   const main = document.querySelector('main') as HTMLDivElement;
   main.innerHTML = prevGame;
   const numberChecker = main.querySelector('.three-to-one') as HTMLTimeElement;
-  let i = 6;
+  let i = 7;
   try {
     const wordGame = new SingletonWord();
     wordGame.startMainArr();
@@ -25,9 +25,9 @@ function renderPreGamePage(): void {
   const interval = setInterval(() => {
     numberChecker.innerHTML = `${i}`;
     i -= 1;
-    if (i === 4) {
+    if (i === 6) {
       const audio = document.createElement('audio');
-      audio.src = `assets/sounds/${objectBase.music.clock}`;
+      audio.src = `assets/sounds/${objectBase.music.clockLong}`;
       audio.play();
       audio.onended = () => {
         const audio2 = document.createElement('audio');

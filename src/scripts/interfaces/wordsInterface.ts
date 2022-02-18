@@ -65,7 +65,8 @@ enum ForAggrObj {
 }
 
 interface FilterObj {
-  'userWord.difficulty'?: string,
+  'userWord.optional.learned' ?: string,
+  'userWord.difficulty' ?: string,
   '$and' ?: {}[],
   '$or' ?: {}[],
 }
@@ -73,7 +74,7 @@ interface IAggrObj {
   group?: number,
   page?: number,
   wordsPerPage?: number,
-  filter?: FilterObj,
+  filter?: any,
 }
 
 interface AggregRes {

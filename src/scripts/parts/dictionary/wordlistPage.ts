@@ -12,6 +12,7 @@ import { StorageItems } from '../../interfaces/usersInterface';
 import {
   createUserWord, getUserWord, updateUserWord, daleteUserWord, getUserWords,
 } from '../../api/userWordsF';
+import renderPreGamePage from '../mini-games/preGame';
 
 const lsItem = new LocalStorageItem();
 
@@ -51,10 +52,9 @@ function styleStandard(wordItem: HTMLElement, el: IWords) {
       audio2.play();
       audio2.addEventListener('ended', () => {
         audio3.play();
-        voluemBtn.disabled = false;
-        document.removeChild(audio1);
-        document.removeChild(audio2);
-        document.removeChild(audio3);
+        audio3.addEventListener('ended', () => {
+          voluemBtn.disabled = false;
+        });
       });
     });
   });
@@ -219,7 +219,7 @@ function renderWordsPage(num: number) {
   const btnPlayAudio = main.querySelector('#sprint-audio-call') as HTMLButtonElement;
   btnPlaySprint.addEventListener('click', () => {
     lsItem.setPage(StorageKeys.sprint);
-    // место для кода
+    renderPreGamePage();
   });
   btnPlayAudio.addEventListener('click', () => {
     lsItem.setPage(StorageKeys.audio);
