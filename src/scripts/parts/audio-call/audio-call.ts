@@ -4,6 +4,8 @@ import { IWords } from '../../interfaces/wordsInterface';
 import { LocalStorageItem, StorageKeys } from '../../classes/lsNavigation';
 import { createElement, getStandartMain } from '../../utils';
 import mainHomeLayout from '../home/mainLayout';
+// eslint-disable-next-line import/no-cycle
+import renderChaptersMiniPage from '../mini-games/chapterMiniPage';
 
 class AudioCall {
   life:number;
@@ -303,8 +305,10 @@ function renderMain(): void {
     main.classList.add('bg-dark');
   }
   main.innerHTML = mainHomeLayout;
-  new LocalStorageItem().setPage(StorageKeys.home);
+  new LocalStorageItem().setPage(StorageKeys.audio);
   getStandartMain();
+  renderChaptersMiniPage();
+  // getStandartMain();
 }
 
 export default createGame;

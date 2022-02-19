@@ -13,10 +13,10 @@ const mainHomeLayout = `<div class="container">
         </div>
       </div>
     <div class="card" style="width: 18rem;">
-      <img src="..." class="card-img-top" alt="...">
+      <img src="../assets/images/sasha.jpg" class="card-img-top" alt="">
       <div class="card-body">
         <h5 class="card-title">Александра Царикова</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <p class="card-text">Frontend developer </br> Настроила взаимодействие с бэкэндом, создала страницы разделов и слов, разработала игру "Спринт"</p>
         <a href="https://github.com/sashatsarikova" target="_blank" class="btn btn-primary">Гитхаб</a>
       </div>
     </div>

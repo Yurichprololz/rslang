@@ -18,8 +18,8 @@ function renderGamePage(): void {
   const btnsContainer = main.querySelector('.buttons-container') as HTMLDivElement;
 
   btnClose.addEventListener('click', () => {
-    STWord.zeroResults();
     renderChaptersMiniPage();
+    STWord.zeroResults();
     const header = document.querySelector('header') as HTMLDivElement;
     const footer = document.querySelector('footer') as HTMLDivElement;
     header.style.display = 'block';
@@ -44,9 +44,9 @@ function renderGamePage(): void {
         };
       };
     }
-    if (i < 0 || STWord.mainArr.length <= attempts) {
+    if (i < 0 || (STWord.mainArr.length <= attempts)) {
       clearInterval(interval);
-      renderResultPage();
+      if (STWord.mainArr.length) renderResultPage();
     }
   }, 1000);
 

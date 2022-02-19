@@ -1,6 +1,9 @@
 import { createElement } from './utils';
-import headerButtonsHandler from './parts/home/headerButtonsHandler';
-import { LocalStorageItem } from './classes/lsNavigation';
+import { headerButtonsHandler, switchClass } from './parts/home/headerButtonsHandler';
+import { LocalStorageItem, StorageKeys } from './classes/lsNavigation';
+import renderChaptersPage from './parts/dictionary/chapterPage';
+import renderWordsPage from './parts/dictionary/wordlistPage';
+import renderChaptersMiniPage from './parts/mini-games/chapterMiniPage';
 import updateHeader from './auth';
 
 function createHeader():HTMLElement {
@@ -44,10 +47,10 @@ function createMain():HTMLElement {
             </div>
           </div>
         <div class="card" style="width: 18rem;">
-          <img src="..." class="card-img-top" alt="...">
+          <img src="../assets/images/sasha.jpg" class="card-img-top" alt="">
           <div class="card-body">
             <h5 class="card-title">Александра Царикова</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <p class="card-text">Frontend developer </br> Настроила взаимодействие с бэкэндом, создала страницы разделов и слов, разработала игру "Спринт"</p>
             <a href="https://github.com/sashatsarikova" target="_blank" class="btn btn-primary">Гитхаб</a>
           </div>
         </div>
@@ -56,7 +59,7 @@ function createMain():HTMLElement {
   return main;
 }
 
-function renderBasicLayout():void {
+function renderHomeLayout():void {
   const header = createHeader();
   const main = createMain();
   const footer = createFooter();
@@ -64,7 +67,42 @@ function renderBasicLayout():void {
   document.body.append(header);
   document.body.append(main);
   document.body.append(footer);
-  new LocalStorageItem().startStorage();
+}
+
+function renderBasicLayout():void {
+  if (!localStorage.getItem(StorageKeys.keyId)) {
+    new LocalStorageItem().startStorage();
+  }
+  const lsItem = new LocalStorageItem();
+  const page = lsItem.getPage();
+  renderHomeLayout();
+  switch (page) {
+    case StorageKeys.home:
+      // renderHomeLayout();
+      break;
+    case StorageKeys.chapter:
+      renderChaptersPage();
+      switchClass(document.querySelector('#dictionary') as HTMLLIElement);
+      break;
+    case StorageKeys.wordlist:
+      renderWordsPage(lsItem.getChapter());
+      switchClass(document.querySelector('#dictionary') as HTMLLIElement);
+      break;
+    case StorageKeys.sprint:
+      renderChaptersMiniPage();
+      switchClass(document.querySelector(`#${StorageKeys.sprint}`) as HTMLLIElement);
+      break;
+    case StorageKeys.audio:
+      renderChaptersMiniPage();
+      switchClass(document.querySelector(`#${StorageKeys.audio}`) as HTMLLIElement);
+      break;
+    case StorageKeys.statistics:
+      // renderHomeLayout();
+      break;
+    default:
+      renderHomeLayout();
+      break;
+  }
 }
 
 export default renderBasicLayout;

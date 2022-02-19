@@ -21,27 +21,31 @@ export default function headerButtonsHandler(head: HTMLElement): void {
   const homeAudioCallButton = head.querySelector('#audio-call') as HTMLButtonElement;
   const homeBtn = head.querySelector('#home') as HTMLLIElement;
 
+  const lsItem = new LocalStorageItem();
+
   homeDictionaryBtn.addEventListener('click', (ev:Event) => {
     switchClass(<HTMLLIElement>ev.target);
     renderChaptersPage();
-    new LocalStorageItem().setPage(StorageKeys.chapter);
+    lsItem.setPage(StorageKeys.chapter);
   });
 
   homeBtn.addEventListener('click', (ev:Event) => {
     switchClass(<HTMLLIElement>ev.target);
     const main = document.querySelector('main') as HTMLElement;
     main.innerHTML = mainHomeLayout;
-    new LocalStorageItem().setPage(StorageKeys.home);
+    lsItem.setPage(StorageKeys.home);
   });
 
   homeSprintButton.addEventListener('click', (ev:Event) => {
     switchClass(<HTMLLIElement>ev.target);
-    new LocalStorageItem().setPage(StorageKeys.sprint);
+    lsItem.setPage(StorageKeys.sprint);
     renderChaptersMiniPage();
   });
   homeAudioCallButton.addEventListener('click', (ev:Event) => {
     switchClass(<HTMLLIElement>ev.target);
-    new LocalStorageItem().setPage(StorageKeys.audio);
+    lsItem.setPage(StorageKeys.audio);
     renderChaptersMiniPage();
   });
 }
+
+export { headerButtonsHandler, switchClass };
