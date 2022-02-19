@@ -184,7 +184,6 @@ function operateButtons(main:HTMLElement, num:number) {
     buttonPrev.disabled = false;
   }
   inputNum.placeholder = `${num + 1}`;
-  inputNum.value = '';
 }
 
 function renderWordsPage(num: number) {
