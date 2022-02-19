@@ -12,6 +12,7 @@ import { StorageItems } from '../../interfaces/usersInterface';
 import {
   createUserWord, getUserWord, updateUserWord, daleteUserWord, getUserWords,
 } from '../../api/userWordsF';
+import renderPreGamePage from '../mini-games/preGame';
 import createGame from '../audio-call/audio-call';
 
 const lsItem = new LocalStorageItem();
@@ -40,6 +41,7 @@ function styleStandard(wordItem: HTMLElement, el: IWords) {
   deleteBtn.style.display = 'none'; // можно добавить возможность удалять слово. Сейчас кнопка просто скрыта
 
   voluemBtn.addEventListener('click', () => {
+    voluemBtn.disabled = true;
     const audio1 = document.createElement('audio');
     audio1.src = `${DOMAIN}/${el.audio}`;
     const audio2 = document.createElement('audio');
@@ -51,6 +53,9 @@ function styleStandard(wordItem: HTMLElement, el: IWords) {
       audio2.play();
       audio2.addEventListener('ended', () => {
         audio3.play();
+        audio3.addEventListener('ended', () => {
+          voluemBtn.disabled = false;
+        });
       });
     });
   });
@@ -137,7 +142,7 @@ function renderWord(num: number, el: IWords) {
 function renderWords(main: HTMLElement) {
   const wordContainer = main.querySelector('#accordionPanel') as HTMLDivElement;
   wordContainer.innerHTML = '';
-  getWords(lsItem.getChapter(), lsItem.getWordlist())
+  getWords(lsItem.getChapter(), <number>lsItem.getWordlist())
     .then((elem) => {
       elem.forEach((el, i) => {
         const word = renderWord(i + 1, el);
@@ -179,6 +184,7 @@ function operateButtons(main:HTMLElement, num:number) {
     buttonPrev.disabled = false;
   }
   inputNum.placeholder = `${num + 1}`;
+  inputNum.value = '';
 }
 
 function renderWordsPage(num: number) {
@@ -193,14 +199,14 @@ function renderWordsPage(num: number) {
     const buttonPrev = <HTMLButtonElement>main.querySelector('.WP-btn-prev');
     if (lsItem.getWordlist() === 0) buttonPrev.disabled = true;
     const inputNum = <HTMLInputElement>main.querySelector('.page-number');
-    inputNum.placeholder = `${lsItem.getWordlist() + 1}`;
+    inputNum.placeholder = `${lsItem.getWordlist() as number + 1}`;
     renderWords(main);
     buttonNext.addEventListener('click', () => {
-      const a = lsItem.getWordlist() + 1;
+      const a = <number>lsItem.getWordlist() + 1;
       operateButtons(main, a);
     });
     buttonPrev.addEventListener('click', () => {
-      const a = lsItem.getWordlist() - 1;
+      const a = <number>lsItem.getWordlist() - 1;
       operateButtons(main, a);
     });
     inputNum.addEventListener('input', () => {
@@ -215,7 +221,7 @@ function renderWordsPage(num: number) {
   const btnPlayAudio = main.querySelector('#sprint-audio-call') as HTMLButtonElement;
   btnPlaySprint.addEventListener('click', () => {
     lsItem.setPage(StorageKeys.sprint);
-    // место для кода
+    renderPreGamePage();
   });
   btnPlayAudio.addEventListener('click', () => {
     lsItem.setPage(StorageKeys.audio);

@@ -15,8 +15,7 @@ enum Words {
   textExampleTranslate = 'textExampleTranslate',
 }
 
-interface IWords {
-  id: string,
+interface IIWords{
   group: number,
   page: number,
   word: string,
@@ -30,6 +29,14 @@ interface IWords {
   wordTranslate: string,
   textMeaningTranslate: string,
   textExampleTranslate: string
+}
+
+interface IWords extends IIWords{
+  id: string,
+}
+
+interface IAgrWords extends IIWords{
+  _id: string,
 }
 
 enum WordOptional{
@@ -64,20 +71,21 @@ enum ForAggrObj {
   or = '$or',
 }
 
-interface FilterObj {
-  'userWord.difficulty'?: string,
-  '$and' ?: {}[],
-  '$or' ?: {}[],
-}
+// interface FilterObj {
+//   'userWord.optional.learned' ?: string,
+//   'userWord.difficulty' ?: string,
+//   '$and' ?: {}[],
+//   '$or' ?: {}[],
+// }
 interface IAggrObj {
   group?: number,
   page?: number,
   wordsPerPage?: number,
-  filter?: FilterObj,
+  filter?: any,
 }
 
 interface AggregRes {
-  paginatedResults: IWords[],
+  paginatedResults: IAgrWords[],
   totalCount: {
     'count': number
   }[],
@@ -85,4 +93,5 @@ interface AggregRes {
 
 export {
   Words, IWords, IUserWords, WordOptional, IUserWordsObj, IAggrObj, ForAggrObj, AggregRes,
+  IAgrWords,
 };

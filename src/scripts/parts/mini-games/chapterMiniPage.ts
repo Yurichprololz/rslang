@@ -2,11 +2,14 @@ import { StorageItems } from '../../interfaces/usersInterface';
 import { createElement, getFullMain } from '../../utils';
 import { objectBase } from '../dictionary/objectBase';
 import { LocalStorageItem } from '../../classes/lsNavigation';
+// eslint-disable-next-line import/no-cycle
+import renderPreGamePage from './preGame';
 import createGame from '../audio-call/audio-call';
 
 const chpterLayout = ` 
 <div class="container dictionary py-3">
     <h2 class="text-center text-white difficulty-title pb-2"></h2>
+    <p class="h4 text-center text-white description-title pb-2"></p>
     <div class="row row-cols-1 row-cols-md-3 g-4 chapter-cards">    
     </div>
 </div>
@@ -17,6 +20,11 @@ const chapterItem = `
     <div class="card-body">
     <h3 class="card-title text-center"></h3>
 </div>`;
+
+const descriptionObj = {
+  'audio-call': 'Узнайте слово по озвучке',
+  sprint: 'Выберите соответсвует ли перевод предложенному слову',
+};
 
 function renderChapterMini(num: number) {
   const cardCol = createElement('div', 'col') as HTMLElement;
@@ -31,8 +39,11 @@ function renderChapterMini(num: number) {
   cardTitle.innerHTML = `${num + 1}`;
 
   cardCol.addEventListener('click', () => {
-    new LocalStorageItem().setChapter(num);
-    if (new LocalStorageItem().getPage() === 'audio-call') {
+    const lsItem = new LocalStorageItem();
+    lsItem.setChapter(num);
+    lsItem.setWordlist(null);
+    if (lsItem.getPage() === 'sprint') renderPreGamePage();
+    if (lsItem.getPage() === 'audio-call') {
       createGame(num, true);
     }
     getFullMain();
@@ -46,7 +57,10 @@ function renderChaptersMiniPage(): void {
   main.innerHTML = chpterLayout;
 
   const difficultyTitle = main.querySelector('.difficulty-title') as HTMLTitleElement;
-  difficultyTitle.innerHTML = `Уровень сложности игры </br><span class="text-uppercase text-warning">${new LocalStorageItem().getPage()}</span>`;
+  const descriptionTitle = main.querySelector('.description-title') as HTMLTitleElement;
+  const pageName = new LocalStorageItem().getPage();
+  difficultyTitle.innerHTML = `Уровень сложности игры </br><span class="text-uppercase text-warning">${pageName}</span>`;
+  descriptionTitle.innerHTML = `${descriptionObj[pageName as 'sprint' | 'audio-call']}`;
   const cardsContainer = main.querySelector('.chapter-cards');
   if (cardsContainer) cardsContainer.innerHTML = '';
   const len = (localStorage.getItem(StorageItems.token) && localStorage.getItem(StorageItems.id))
