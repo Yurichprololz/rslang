@@ -184,6 +184,7 @@ function operateButtons(main:HTMLElement, num:number) {
     buttonPrev.disabled = false;
   }
   inputNum.placeholder = `${num + 1}`;
+  inputNum.value = '';
 }
 
 function renderWordsPage(num: number) {
@@ -208,8 +209,12 @@ function renderWordsPage(num: number) {
       const a = <number>lsItem.getWordlist() - 1;
       operateButtons(main, a);
     });
-    inputNum.addEventListener('input', () => {
-      operateButtons(main, Number(inputNum.value));
+    inputNum.addEventListener('change', () => {
+      if (validateInput(inputNum.value)) {
+        operateButtons(main, Number(inputNum.value) - 1);
+      } else {
+        validateInput(inputNum.value);
+      }
     });
   } else {
     const buttonTools = <HTMLDivElement>main.querySelector('.btn-toolbar');
@@ -220,12 +225,42 @@ function renderWordsPage(num: number) {
   const btnPlayAudio = main.querySelector('#sprint-audio-call') as HTMLButtonElement;
   btnPlaySprint.addEventListener('click', () => {
     lsItem.setPage(StorageKeys.sprint);
+    changeHeader(lsItem.getPage());
     renderPreGamePage();
   });
   btnPlayAudio.addEventListener('click', () => {
     lsItem.setPage(StorageKeys.audio);
-    createGame(new LocalStorageItem().getChapter(), false);
+    changeHeader(lsItem.getPage());
+    createGame(lsItem.getChapter(), false);
     getFullMain();
+  });
+}
+
+function validateInput(value: string | number) {
+  const input = document.querySelector('.page-number');
+  if (Number(value) < 1 || Number(value) > 30 || Number.isNaN(Number(value))) {
+    input?.classList.add('border-oops');
+    return false;
+  }
+  input?.classList.remove('border-oops');
+  return true;
+}
+
+function changeHeader(id: string) {
+  const header = document.querySelector('header');
+  const target = <HTMLLIElement>header?.querySelector(`#${id}`);
+  switchClass(target);
+}
+
+function switchClass(buttonParam: HTMLLIElement): void {
+  const buttons = document.querySelectorAll('.nav-link');
+  [...buttons].map((button):boolean => {
+    if (button.classList.contains('text-white') && (button.id === buttonParam.id)) {
+      button.classList.replace('text-white', 'text-secondary');
+    } else {
+      button.classList.replace('text-secondary', 'text-white');
+    }
+    return true;
   });
 }
 

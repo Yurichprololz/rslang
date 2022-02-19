@@ -2,7 +2,7 @@ import { chpterLayout, chapterItem } from './dictionaryLayouts';
 import { createElement } from '../../utils';
 import { objectBase } from './objectBase';
 import { StorageItems } from '../../interfaces/usersInterface';
-import { LocalStorageItem } from '../../classes/lsNavigation';
+import { LocalStorageItem, StorageKeys } from '../../classes/lsNavigation';
 import renderWordsPage from './wordlistPage';
 
 function renderChapter(num: number) {
@@ -20,7 +20,9 @@ function renderChapter(num: number) {
   cardText.innerHTML = `${objectBase.text[num]}`;
 
   cardCol.addEventListener('click', () => {
-    new LocalStorageItem().setChapter(num);
+    const lsItem = new LocalStorageItem();
+    lsItem.setPage(StorageKeys.wordlist);
+    lsItem.setChapter(num);
     renderWordsPage(num);
   });
 
