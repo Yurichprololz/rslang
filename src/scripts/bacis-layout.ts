@@ -11,7 +11,7 @@ function createHeader():HTMLElement {
 }
 
 function createFooter():HTMLElement {
-  const footer = createElement('footer', 'footer bg-dark') as HTMLElement;
+  const footer = createElement('footer', 'footer bg-dark pt-5') as HTMLElement;
   footer.innerHTML = `
   <div class="container footer__container">
       <div class="footer__rsschool">
@@ -27,7 +27,7 @@ function createFooter():HTMLElement {
 }
 
 function createMain():HTMLElement {
-  const main = createElement('main', 'main bg-dark text-white pb-5') as HTMLElement;
+  const main = createElement('main', 'main bg-dark text-white') as HTMLElement;
   main.innerHTML = `
   <div class="container">
     <h1 class="h1 text-white text-center">RSLang</h1>

@@ -1,8 +1,10 @@
 import { StorageItems } from '../../interfaces/usersInterface';
-import { createElement } from '../../utils';
+import { createElement, getFullMain } from '../../utils';
 import { objectBase } from '../dictionary/objectBase';
 import { LocalStorageItem } from '../../classes/lsNavigation';
+// eslint-disable-next-line import/no-cycle
 import renderPreGamePage from './preGame';
+import createGame from '../audio-call/audio-call';
 
 const chpterLayout = ` 
 <div class="container dictionary py-3">
@@ -41,6 +43,10 @@ function renderChapterMini(num: number) {
     lsItem.setChapter(num);
     lsItem.setWordlist(null);
     if (lsItem.getPage() === 'sprint') renderPreGamePage();
+    if (lsItem.getPage() === 'audio-call') {
+      createGame(num, true);
+    }
+    getFullMain();
   });
 
   return cardCol;
