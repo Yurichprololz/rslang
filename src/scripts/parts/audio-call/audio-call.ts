@@ -6,6 +6,7 @@ import { createElement, getStandartMain } from '../../utils';
 import mainHomeLayout from '../home/mainLayout';
 // eslint-disable-next-line import/no-cycle
 import renderChaptersMiniPage from '../mini-games/chapterMiniPage';
+import { setStatistics } from '../../api/statisticsF';
 
 class AudioCall {
   life:number;
@@ -151,6 +152,7 @@ class AudioCall {
   }
 
   finishGame(): void {
+    this.setStatisticFromAudio();
     const main = document.querySelector('main');
     if (main) {
       if (main.classList.contains('main_audio')) {
@@ -181,6 +183,21 @@ class AudioCall {
       }
       document.removeEventListener('keydown', keyHandler);
     }
+  }
+
+  setStatisticFromAudio():void {
+    const wrong:string[] = [];
+    const rigth:string[] = [];
+
+    this.answers.forEach((answ, index) => {
+      if (answ) {
+        rigth.push(this.answerWord[index].id);
+      } else {
+        wrong.push(this.answerWord[index].id);
+      }
+    });
+
+    setStatistics('audio-call', Date.now(), rigth, wrong, 0);
   }
 }
 
