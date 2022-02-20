@@ -1,5 +1,5 @@
 import { createElement } from './utils';
-import { headerButtonsHandler, switchClass } from './parts/home/headerButtonsHandler';
+import { switchClass } from './parts/home/headerButtonsHandler';
 import { LocalStorageItem, StorageKeys } from './classes/lsNavigation';
 import renderChaptersPage from './parts/dictionary/chapterPage';
 import renderWordsPage from './parts/dictionary/wordlistPage';
@@ -9,7 +9,6 @@ import updateHeader from './auth';
 function createHeader():HTMLElement {
   const header = createElement('header', 'header p-3 bg-dark text-white') as HTMLElement;
   updateHeader(header);
-  headerButtonsHandler(header);
   return header;
 }
 
