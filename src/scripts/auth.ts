@@ -5,6 +5,7 @@ import {
 } from './validate-user-data';
 import { createUser, signInUser } from './api/userF';
 import { IAuth, IUserObjBody } from './interfaces/usersInterface';
+import { headerButtonsHandler } from './parts/home/headerButtonsHandler';
 
 interface Iinputs{
   mailInput: HTMLInputElement
@@ -214,6 +215,7 @@ function updateHeader(element:HTMLElement): HTMLElement {
           </div>
         </div>`;
   listenerOnHeader(element);
+  headerButtonsHandler(element);
   return element;
 }
 
