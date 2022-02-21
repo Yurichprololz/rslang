@@ -28,7 +28,7 @@ class AudioCall {
 
   constructor(chapter: number, fromDictionary:boolean) {
     this.life = 5;
-    this.chapter = chapter;
+    this.chapter = chapter < 5 ? chapter : 5;
     this.fromDictionary = fromDictionary;
     this.round = 0;
     this.word = null;
