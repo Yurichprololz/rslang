@@ -7,6 +7,7 @@ import {
   IUserWords, IUserWordsObj, IAggrObj, AggregRes,
 } from '../interfaces/wordsInterface';
 import buildFilterStrF from '../units/buildFilterStrF';
+import { refreshToken } from './userF';
 
 function shapeFetchStr(): string {
   return `${DOMAIN}${General.users}/${localStorage.getItem(StorageItems.id)}${General.words}`;
@@ -28,6 +29,20 @@ async function getUserWords() {
   if (rawResponse.ok) {
     const content: IUserWords[] = await rawResponse.json();
     return content;
+  }
+  if (rawResponse.status === 401) {
+    refreshToken().then(async () => {
+      const rawResponse2 = await fetch(`${shapeFetchStr()}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(StorageItems.token)}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      const content: IUserWords[] = await rawResponse2.json();
+      return content;
+    });
   }
   return rawResponse.status;
 }
@@ -61,6 +76,20 @@ async function getUserWord(wordId: string) {
   if (rawResponse.ok) {
     const content: IUserWords = await rawResponse.json();
     return content;
+  }
+  if (rawResponse.status === 401) {
+    refreshToken().then(async () => {
+      const rawResponse2 = await fetch(`${shapeFetchStr()}/${wordId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem(StorageItems.token)}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      const content: IUserWords = await rawResponse2.json();
+      return content;
+    });
   }
   return rawResponse.status;
 }
