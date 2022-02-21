@@ -4,6 +4,8 @@ import renderChaptersMiniPage from '../chapterMiniPage';
 import SingletonWord from '../../../classes/sprintWords';
 import objectBase from './objectBase';
 import renderResultPage from './resultPage';
+import { setStatistics } from '../../../api/statisticsF';
+import { StorageItems } from '../../../interfaces/usersInterface';
 
 const STWord = SingletonWord.getInstance();
 
@@ -46,7 +48,13 @@ function renderGamePage(): void {
     }
     if (i < 0 || (STWord.mainArr.length <= attempts)) {
       clearInterval(interval);
-      if (STWord.mainArr.length) renderResultPage();
+      if (STWord.mainArr.length) {
+        const a = Date.now();
+        if (localStorage.getItem(StorageItems.id) && localStorage.getItem(StorageItems.token)) {
+          setStatistics('sprint', a, STWord.rightArr, STWord.wrongArr, STWord.maxRightAttempts);
+        }
+        renderResultPage();
+      }
     }
   }, 1000);
 

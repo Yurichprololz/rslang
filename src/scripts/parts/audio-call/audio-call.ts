@@ -7,6 +7,7 @@ import mainHomeLayout from '../home/mainLayout';
 // eslint-disable-next-line import/no-cycle
 import renderChaptersMiniPage from '../mini-games/chapterMiniPage';
 import { setStatistics } from '../../api/statisticsF';
+import { StorageItems } from '../../interfaces/usersInterface';
 
 class AudioCall {
   life:number;
@@ -196,8 +197,9 @@ class AudioCall {
         wrong.push(this.answerWord[index].id);
       }
     });
-
-    setStatistics('audio-call', Date.now(), rigth, wrong, 0);
+    if (localStorage.getItem(StorageItems.id) && localStorage.getItem(StorageItems.token)) {
+      setStatistics('audio-call', Date.now(), rigth, wrong, 0);
+    }
   }
 }
 
