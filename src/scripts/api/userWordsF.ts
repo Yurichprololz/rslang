@@ -17,7 +17,7 @@ function shapeAggrFetchStr(): string {
   return `${DOMAIN}${General.users}/${localStorage.getItem(StorageItems.id)}${SubGeneral.aggregatedWords}`;
 }
 
-async function getUserWords() {
+async function getUserWords(): Promise<IUserWords[]> {
   const rawResponse = await fetch(`${shapeFetchStr()}`, {
     method: 'GET',
     headers: {
@@ -26,6 +26,10 @@ async function getUserWords() {
       'Content-Type': 'application/json',
     },
   });
+  if (rawResponse.status === 401 || rawResponse.status === 403) {
+    await refreshToken();
+    return getUserWords();
+  }
   const content: IUserWords[] = await rawResponse.json();
   return content;
 }
@@ -48,7 +52,7 @@ async function createUserWord(wordId: string, wordObj: IUserWordsObj) {
 }
 
 async function getUserWord(wordId: string)
-  : Promise<IUserWords | number> {
+  : Promise<IUserWords> {
   const rawResponse = await fetch(`${shapeFetchStr()}/${wordId}`, {
     method: 'GET',
     headers: {
@@ -57,14 +61,12 @@ async function getUserWord(wordId: string)
       'Content-Type': 'application/json',
     },
   });
-  if (rawResponse.ok) {
-    const content: IUserWords = await rawResponse.json();
-    return content;
-  } if (rawResponse.status === 403) {
+  if (rawResponse.status === 401) {
     await refreshToken();
     return getUserWord(wordId);
   }
-  return rawResponse.status;
+  const content: IUserWords = await rawResponse.json();
+  return content;
 }
 
 async function getAggregatedWords(groupObj: IAggrObj) {
