@@ -7,6 +7,7 @@ import {
   IUserWords, IUserWordsObj, IAggrObj, AggregRes,
 } from '../interfaces/wordsInterface';
 import buildFilterStrF from '../units/buildFilterStrF';
+import { refreshToken } from './userF';
 
 function shapeFetchStr(): string {
   return `${DOMAIN}${General.users}/${localStorage.getItem(StorageItems.id)}${General.words}`;
@@ -46,7 +47,8 @@ async function createUserWord(wordId: string, wordObj: IUserWordsObj) {
   return content;
 }
 
-async function getUserWord(wordId: string) {
+async function getUserWord(wordId: string)
+  : Promise<IUserWords | number> {
   const rawResponse = await fetch(`${shapeFetchStr()}/${wordId}`, {
     method: 'GET',
     headers: {
@@ -55,8 +57,14 @@ async function getUserWord(wordId: string) {
       'Content-Type': 'application/json',
     },
   });
-  const content: IUserWords = await rawResponse.json();
-  return content;
+  if (rawResponse.ok) {
+    const content: IUserWords = await rawResponse.json();
+    return content;
+  } if (rawResponse.status === 403) {
+    await refreshToken();
+    return getUserWord(wordId);
+  }
+  return rawResponse.status;
 }
 
 async function getAggregatedWords(groupObj: IAggrObj) {
