@@ -14,6 +14,7 @@ import {
 } from '../../api/userWordsF';
 import renderPreGamePage from '../mini-games/preGame';
 import createGame from '../audio-call/audio-call';
+import StatAnalizer from '../statistics/statAnalizer';
 
 const lsItem = new LocalStorageItem();
 
@@ -69,25 +70,37 @@ function styleSpecial(wordItem: HTMLElement) {
   markDifficulty.style.display = 'none';
   const markLearned = wordItem.querySelector('.learned-mark') as HTMLTitleElement;
   markLearned.style.display = 'none';
-  // const rightA = wordItem.querySelector(`.${classesToBeUsed.rightAnswer}`) as HTMLTitleElement;
-  // const wrongA = wordItem.querySelector(`.${classesToBeUsed.wrongAnswer}`) as HTMLTitleElement;
+  const rightA = wordItem.querySelector(`.${classesToBeUsed.rightAnswer}`) as HTMLTitleElement;
+  const wrongA = wordItem.querySelector(`.${classesToBeUsed.wrongAnswer}`) as HTMLTitleElement;
   const nodesForDisplayNone = [...wordItem.querySelectorAll('.display-none') as NodeListOf<HTMLDivElement>];
+  const statAnalizer = new StatAnalizer();
 
   if (localStorage.getItem(StorageItems.id) && localStorage.getItem(StorageItems.token)) {
-    getUserWords().then((elem) => {
-      elem.forEach((element) => {
-        if (element.wordId === word.id) {
-          if (element.difficulty === 'hard') {
-            inputDifficulty.checked = true;
-            markDifficulty.style.display = 'inline';
-          }
-          if (element.optional?.learned === true) {
-            inputLearned.checked = true;
-            markLearned.style.display = 'inline';
-          }
+    statAnalizer.fillArrays().then(() => {
+      const wrong = statAnalizer.wrongTotal(word.id);
+      const right = statAnalizer.rightTotal(word.id);
+      wrongA.innerHTML = `${wrong}`;
+      rightA.innerHTML = `${right}`;
+      statAnalizer.learenedToday();
+    }).then(() => {
+      getUserWords().then((elem) => {
+        if (typeof elem !== 'number') {
+          elem.forEach((element) => {
+            if (element.wordId === word.id) {
+              if (element.difficulty === 'hard') {
+                inputDifficulty.checked = true;
+                markDifficulty.style.display = 'inline';
+              }
+              if (element.optional?.learned === true) {
+                inputLearned.checked = true;
+                markLearned.style.display = 'inline';
+              }
+            }
+          });
         }
       });
     });
+
     inputLearned.addEventListener('change', () => {
       if (inputLearned.checked && !inputDifficulty.checked) {
         createUserWord(word.id, objStartLearned).then(() => {
@@ -95,10 +108,12 @@ function styleSpecial(wordItem: HTMLElement) {
         });
       } else if (inputDifficulty.checked && inputLearned.checked) {
         getUserWord(word.id).then((elem) => {
-          updateUserWord(word.id, { difficulty: 'light', optional: elem.optional });
-          markDifficulty.style.display = 'none';
-          inputDifficulty.checked = false;
-          markLearned.style.display = 'inline';
+          if (typeof elem !== 'number') {
+            updateUserWord(word.id, { difficulty: 'light', optional: elem.optional });
+            markDifficulty.style.display = 'none';
+            inputDifficulty.checked = false;
+            markLearned.style.display = 'inline';
+          }
         });
       } else {
         daleteUserWord(word.id);
@@ -112,10 +127,12 @@ function styleSpecial(wordItem: HTMLElement) {
         });
       } else if (inputDifficulty.checked && inputLearned.checked) {
         getUserWord(word.id).then((elem) => {
-          updateUserWord(word.id, { difficulty: elem.difficulty, optional: { learned: false } });
-          markLearned.style.display = 'none';
-          inputLearned.checked = false;
-          markDifficulty.style.display = 'inline';
+          if (typeof elem !== 'number') {
+            updateUserWord(word.id, { difficulty: elem.difficulty, optional: { learned: false } });
+            markLearned.style.display = 'none';
+            inputLearned.checked = false;
+            markDifficulty.style.display = 'inline';
+          }
         });
       } else {
         daleteUserWord(word.id);
@@ -156,14 +173,16 @@ function renderUserWords(main: HTMLElement) {
   wordContainer.innerHTML = '';
   getUserWords()
     .then((elem) => {
-      elem.forEach((el, i) => {
-        if (el.difficulty === 'hard') {
-          getWord(el.wordId).then((element) => {
-            const word = renderWord(i + 1, element);
-            wordContainer?.append(word);
-          });
-        }
-      });
+      if (typeof elem !== 'number') {
+        elem.forEach((el, i) => {
+          if (el.difficulty === 'hard') {
+            getWord(el.wordId).then((element) => {
+              const word = renderWord(i + 1, element);
+              wordContainer?.append(word);
+            });
+          }
+        });
+      }
     });
 }
 
