@@ -4,6 +4,7 @@ import { objectBase } from '../dictionary/objectBase';
 import { LocalStorageItem } from '../../classes/lsNavigation';
 // eslint-disable-next-line import/no-cycle
 import renderPreGamePage from './preGame';
+// eslint-disable-next-line import/no-cycle
 import createGame from '../audio-call/audio-call';
 
 const chpterLayout = ` 
