@@ -144,7 +144,7 @@ class AudioCall {
       this.paginateFromMenu();
     }
 
-    if (this.chapter < 0 || this.chapter > 29) {
+    if (this.chapter < 0 || this.chapter > 29 || this.wordlist < 0) {
       this.finishGame();
     } else {
       await this.createRound();
