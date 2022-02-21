@@ -320,9 +320,9 @@ function playWord(): void {
 function playAns(ans:boolean): void {
   let audio;
   if (ans) {
-    audio = new Audio('../../../assets/sounds/right.mp3');
+    audio = new Audio('./assets/sounds/right.mp3');
   } else {
-    audio = new Audio('../../../assets/sounds/wrong.mp3');
+    audio = new Audio('./assets/sounds/wrong.mp3');
   }
   audio.currentTime = 0;
   audio.play();
