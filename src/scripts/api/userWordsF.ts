@@ -7,6 +7,7 @@ import {
   IUserWords, IUserWordsObj, IAggrObj, AggregRes,
 } from '../interfaces/wordsInterface';
 import buildFilterStrF from '../units/buildFilterStrF';
+import { refreshToken } from './userF';
 
 function shapeFetchStr(): string {
   return `${DOMAIN}${General.users}/${localStorage.getItem(StorageItems.id)}${General.words}`;
@@ -16,7 +17,7 @@ function shapeAggrFetchStr(): string {
   return `${DOMAIN}${General.users}/${localStorage.getItem(StorageItems.id)}${SubGeneral.aggregatedWords}`;
 }
 
-async function getUserWords() {
+async function getUserWords(): Promise<IUserWords[]> {
   const rawResponse = await fetch(`${shapeFetchStr()}`, {
     method: 'GET',
     headers: {
@@ -25,11 +26,12 @@ async function getUserWords() {
       'Content-Type': 'application/json',
     },
   });
-  if (rawResponse.ok) {
-    const content: IUserWords[] = await rawResponse.json();
-    return content;
+  if (rawResponse.status === 401 || rawResponse.status === 403) {
+    await refreshToken();
+    return getUserWords();
   }
-  return rawResponse.status;
+  const content: IUserWords[] = await rawResponse.json();
+  return content;
 }
 
 async function createUserWord(wordId: string, wordObj: IUserWordsObj) {
@@ -49,7 +51,8 @@ async function createUserWord(wordId: string, wordObj: IUserWordsObj) {
   return content;
 }
 
-async function getUserWord(wordId: string) {
+async function getUserWord(wordId: string)
+  : Promise<IUserWords> {
   const rawResponse = await fetch(`${shapeFetchStr()}/${wordId}`, {
     method: 'GET',
     headers: {
@@ -58,11 +61,12 @@ async function getUserWord(wordId: string) {
       'Content-Type': 'application/json',
     },
   });
-  if (rawResponse.ok) {
-    const content: IUserWords = await rawResponse.json();
-    return content;
+  if (rawResponse.status === 401) {
+    await refreshToken();
+    return getUserWord(wordId);
   }
-  return rawResponse.status;
+  const content: IUserWords = await rawResponse.json();
+  return content;
 }
 
 async function getAggregatedWords(groupObj: IAggrObj) {

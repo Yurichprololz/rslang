@@ -112,9 +112,11 @@ async function refreshToken():Promise<void> {
       'Content-Type': 'application/json',
     },
   });
-  const content: IAuth = await rawResponse.json();
-  localStorage.setItem(StorageItems.token, content.token);
-  localStorage.setItem(StorageItems.refreshToken, content.refreshToken);
+  if (rawResponse.ok) {
+    const content: IAuth = await rawResponse.json();
+    localStorage.setItem(StorageItems.token, content.token);
+    localStorage.setItem(StorageItems.refreshToken, content.refreshToken);
+  }
 }
 
 export {
