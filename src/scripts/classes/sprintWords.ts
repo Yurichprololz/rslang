@@ -116,14 +116,16 @@ export default class SingletonWord {
     } else if (lsItem.getChapter() === 6) {
       getUserWords()
         .then((elem) => {
-          elem.forEach((el) => {
-            if (el.difficulty === 'hard') {
-              getWord(el.wordId).then((element) => {
-                this.mainArr.push([element.id, element.word, element.wordTranslate]);
-              });
-            }
-            return true;
-          });
+          if (typeof elem !== 'number') {
+            elem.forEach((el) => {
+              if (el.difficulty === 'hard') {
+                getWord(el.wordId).then((element) => {
+                  this.mainArr.push([element.id, element.word, element.wordTranslate]);
+                });
+              }
+              return true;
+            });
+          }
         });
       for (let counter = 0; counter < 7; counter += 1) {
         claimPrevAuth(0).then((el) => {
@@ -232,6 +234,7 @@ export default class SingletonWord {
   wrongAnsverF() {
     this.totalAttempts += 1;
     this.value = 10;
+    this.rightAttempts = 0;
     this.attemptsForFlash = 0;
     const audio = document.createElement('audio');
     audio.src = `assets/sounds/${objectBase.music.wrongA}`;

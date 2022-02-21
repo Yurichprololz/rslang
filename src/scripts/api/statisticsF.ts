@@ -39,9 +39,9 @@ async function setStatistics(
         sprint: {
           [idDate]: [rightArr, wrongArr, sessionLength],
         },
-        'audio-call': {},
+        'audio-call': { 1645443360195: [[], [], 0] },
       } : {
-        sprint: {},
+        sprint: { 1645443360195: [[], [], 0] },
         'audio-call': {
           [idDate]: [rightArr, wrongArr, sessionLength],
         },
@@ -63,6 +63,16 @@ async function setStatistics(
       const content: IStat = await rawResponse.json();
       return content.optional;
     }
+
+    const a = JSON.stringify({
+      learnedWords: 0,
+      optional: {
+        sprint: { ...(<IForOptional>el)?.sprint, ...objectToSet.sprint },
+        'audio-call': { ...(<IForOptional>el)?.['audio-call'], ...objectToSet['audio-call'] },
+      },
+    });
+    if (a.length > 1500) return null;
+
     const rawResponse = await fetch(`${shapeFetchStr()}`, {
       method: 'PUT',
       headers: {

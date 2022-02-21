@@ -25,8 +25,11 @@ async function getUserWords() {
       'Content-Type': 'application/json',
     },
   });
-  const content: IUserWords[] = await rawResponse.json();
-  return content;
+  if (rawResponse.ok) {
+    const content: IUserWords[] = await rawResponse.json();
+    return content;
+  }
+  return rawResponse.status;
 }
 
 async function createUserWord(wordId: string, wordObj: IUserWordsObj) {
@@ -55,8 +58,11 @@ async function getUserWord(wordId: string) {
       'Content-Type': 'application/json',
     },
   });
-  const content: IUserWords = await rawResponse.json();
-  return content;
+  if (rawResponse.ok) {
+    const content: IUserWords = await rawResponse.json();
+    return content;
+  }
+  return rawResponse.status;
 }
 
 async function getAggregatedWords(groupObj: IAggrObj) {
