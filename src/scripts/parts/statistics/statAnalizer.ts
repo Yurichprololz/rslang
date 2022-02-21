@@ -179,8 +179,8 @@ export default class StatAnalizer {
     }
 
     function isRightFeeted(el: string) {
-      if ((resultRight[el] < 5 || !resultRight[el])
-      && (resultRight[el] || 0) + resultRightNow[el] >= 5) {
+      if ((resultRight[el] < 3 || !resultRight[el])
+      && (resultRight[el] || 0) + resultRightNow[el] >= 3) {
         return true;
       }
       return false;
