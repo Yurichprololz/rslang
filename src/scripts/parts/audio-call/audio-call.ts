@@ -92,10 +92,12 @@ class AudioCall {
   falseAnswer(): void {
     this.answers.push(false);
     this.life -= 1;
+    playAns(false);
   }
 
   trueAnswer(): void {
     this.answers.push(true);
+    playAns(true);
   }
 
   getOptions(words:IWords[]): string[] {
@@ -311,6 +313,17 @@ function checkAnswer(event:Event): void {
 
 function playWord(): void {
   const audio = document.getElementById('audio-file') as HTMLAudioElement;
+  audio.currentTime = 0;
+  audio.play();
+}
+
+function playAns(ans:boolean): void {
+  let audio;
+  if (ans) {
+    audio = new Audio('../../../assets/sounds/right.mp3');
+  } else {
+    audio = new Audio('../../../assets/sounds/wrong.mp3');
+  }
   audio.currentTime = 0;
   audio.play();
 }
