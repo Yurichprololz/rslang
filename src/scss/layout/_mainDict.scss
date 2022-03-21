@@ -1,0 +1,37 @@
+@use "sass:color";
+
+.dictionary{
+  .card {
+    h3{
+      font-size: 6rem;
+    }
+    @each $colorName, $color in $colorArr{
+      .colored-#{$colorName}{
+        background: $color;
+
+        transition: all .3s ease-in-out;
+      }
+      .colored-#{$colorName}:hover{
+        background: color.change(black, $lightness: 85%);
+        color: $color;
+      } 
+    }
+    &:active{
+      transform: scale(95%);
+    }
+  }
+}
+
+.wordlist{
+  @each $colorName, $color in $colorArrBg{
+    &.colored-#{$colorName}{
+      background: $color;
+    }
+
+  .border-oops{
+    box-shadow: inset 0.3vmin -0.3vmin 0.1vmin rgba(217, 46, 46, 0.639);
+  }
+  }
+
+
+}
